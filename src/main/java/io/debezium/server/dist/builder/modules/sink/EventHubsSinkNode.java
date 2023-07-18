@@ -19,6 +19,4 @@ public class EventHubsSinkNode implements ModuleNode {
     public String toString() {
         return ARTIFACT_ID;
     }
-
-
 }

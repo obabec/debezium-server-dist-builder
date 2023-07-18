@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Add all nodes to builder, prepare configuration builder for the nodes
 public class DebeziumServerPomBuilder {
 
     private final Document pom;

@@ -12,6 +12,13 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Properties;
 
+
+// TODO: Rewrite this to single builder not 2 separate
+// Better way how to set maven home probably via config
+// Set configurable path for repository to be
+// Handle situation where repository is already cloned
+
+
 public class ProjectBuilder {
     private static final String GIT_REPO = "https://github.com/debezium/debezium-server.git";
     private final String targetPath;

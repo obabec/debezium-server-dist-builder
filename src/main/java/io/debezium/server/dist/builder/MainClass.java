@@ -3,17 +3,16 @@ package io.debezium.server.dist.builder;
 public class MainClass {
 
     public static void main(String[] args) {
-        DebeziumServerPomBuilder pomBuilder = new DebeziumServerPomBuilder()
+        DebeziumServerAssemblyBuilder pomBuilder = new DebeziumServerAssemblyBuilder()
                 .addKafkaSink()
                 .addPulsarSink()
                 .addKafkaSink()
                 .addMysqlSource()
-                .addPostgresSource()
-                .build();
+                .addPostgresSource();
 
-        new ProjectBuilder("/Users/obabec/Desktop/test-debezium-server")
-                .cloneDistFolder()
-                .removeCurrentPom()
-                .buildProject(pomBuilder, true);
+        //new ProjectBuilder("/Users/obabec/Desktop/test-debezium-server")
+          //      .cloneDistFolder()
+            //    .removeCurrentPom()
+              //  .buildProject(pomBuilder, true);
     }
 }

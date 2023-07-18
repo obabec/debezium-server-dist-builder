@@ -7,6 +7,13 @@ import org.w3c.dom.Node;
 
 public class HttpSinkNode implements ModuleNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "http";
+
+
+
+
+
+
+
     @Override
     public Node buildNode(Document document) {
         return new ModuleDependencyBuilder(document)

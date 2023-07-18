@@ -6,7 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class KinesisSinkNode implements ModuleNode {
-    private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "kinesi";
+    private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "kinesis";
     @Override
     public Node buildNode(Document document) {
         return new ModuleDependencyBuilder(document)
