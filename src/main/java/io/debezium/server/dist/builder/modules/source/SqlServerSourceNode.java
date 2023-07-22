@@ -2,14 +2,17 @@ package io.debezium.server.dist.builder.modules.source;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.ModuleNode;
-import io.debezium.server.dist.builder.modules.SourceNodeConfiguration;
-import io.debezium.server.dist.builder.modules.types.BinaryHandlingMode;
+import io.debezium.server.dist.builder.modules.config.SqlBasedConnectorConfig;
+import io.debezium.server.dist.builder.modules.config.types.SchemaHistoryInternalConfig;
+import io.debezium.server.dist.builder.modules.config.types.SnapshotIsolationMode;
+import io.debezium.server.dist.builder.modules.config.types.SourceStructVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class SqlServerSourceNode extends SourceNodeConfiguration {
+public class SqlServerSourceNode extends SqlBasedConnectorConfig implements ModuleNode {
     private final String ARTIFACT_ID = DEBEZIUM_CONNECTOR_PREFIX + "sql";
     private final String connectorClass = "io.debezium.connector.sqlserver.SqlServerConnector";
     private String databaseInstance;
@@ -19,10 +22,28 @@ public class SqlServerSourceNode extends SourceNodeConfiguration {
     private List<String> schemaIncludeList;
     private List<String> schemaExcludeList;
 
+    private Boolean skipMessagesWithoutChange;
 
+    private String snapshotLockingMode;
 
+    private SnapshotIsolationMode snapshotIsolationMode;
 
+    private Integer pollIntervalMs;
 
+    private Integer queryFetchSize;
+
+    private SourceStructVersion sourceStructVersion;
+
+    private Integer retriableRestartConnectorWaitMs;
+
+    private Boolean incrementalSnapshotAllowSchemaChanges;
+
+    private Integer maxIterationTransaction;
+
+    private Boolean incrementalSnapshotOptionRecompile;
+
+    private HashMap<String, String> customMetricTags;
+    private SchemaHistoryInternalConfig schemaHistoryInternalConfig;
     @Override
     public Node buildNode(Document document) {
         return new ModuleDependencyBuilder(document)

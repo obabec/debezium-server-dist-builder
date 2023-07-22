@@ -1,4 +1,4 @@
-package io.debezium.server.dist.builder.modules.types;
+package io.debezium.server.dist.builder.modules.config.types;
 
 public enum BinaryHandlingMode {
     BYTES,

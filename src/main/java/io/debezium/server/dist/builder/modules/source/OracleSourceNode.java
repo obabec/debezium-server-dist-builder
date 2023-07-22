@@ -2,17 +2,20 @@ package io.debezium.server.dist.builder.modules.source;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.ModuleNode;
-import io.debezium.server.dist.builder.modules.types.BinaryHandlingMode;
-import io.debezium.server.dist.builder.modules.types.IntervalHandlingMode;
-import io.debezium.server.dist.builder.modules.types.OracleConnectionAdapter;
-import io.debezium.server.dist.builder.modules.types.ProcessingFailureHandlingMode;
-import io.debezium.server.dist.builder.modules.types.SchemaNameAdjustmentMode;
+import io.debezium.server.dist.builder.modules.config.SqlBasedConnectorConfig;
+import io.debezium.server.dist.builder.modules.config.logmine.LogMiningConfig;
+import io.debezium.server.dist.builder.modules.config.types.BinaryHandlingMode;
+import io.debezium.server.dist.builder.modules.config.types.IntervalHandlingMode;
+import io.debezium.server.dist.builder.modules.config.types.OracleConnectionAdapter;
+import io.debezium.server.dist.builder.modules.config.types.ProcessingFailureHandlingMode;
+import io.debezium.server.dist.builder.modules.config.types.SchemaHistoryInternalConfig;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import java.util.List;
 
-public class OracleSourceNode implements ModuleNode {
+// Mapping done
+public class OracleSourceNode extends SqlBasedConnectorConfig implements ModuleNode {
     private final String ARTIFACT_ID = DEBEZIUM_CONNECTOR_PREFIX + "oracle";
 
     private final String connectorClass = "io.debezium.connector.oracle.OracleConnector";
@@ -28,6 +31,9 @@ public class OracleSourceNode implements ModuleNode {
     private String snapshotSelectStatementOverrides;
 
     private List<String> schemaIncludeList;
+
+    private Boolean skipMessagesWithoutChange;
+
 
     private Boolean includeSchemaComments;
     private List<String> schemaExcludeList;
@@ -46,10 +52,16 @@ public class OracleSourceNode implements ModuleNode {
 
     private Integer queryFetchSize;
 
-    private Boolean provideTransactionMetadata;
+    private String snapshotLockingMode;
 
-    // TODO: logmining config
+    private LogMiningConfig logMiningConfig;
+    private Boolean lobEnabled;
+    private String unavailableValuePlaceholder;
 
+
+    // TODO: check if this is list of IP addresses
+    protected List<String> racNodes;
+    private SchemaHistoryInternalConfig schemaHistoryInternalConfig;
 
     @Override
     public Node buildNode(Document document) {
