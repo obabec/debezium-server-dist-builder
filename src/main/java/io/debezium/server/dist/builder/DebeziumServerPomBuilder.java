@@ -1,14 +1,12 @@
 package io.debezium.server.dist.builder;
 
-import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.ModuleNode;
-import io.debezium.server.dist.builder.modules.sink.KafkaSinkNode;
-import io.debezium.server.dist.builder.modules.sink.PulsarSinkNode;
-import io.debezium.server.dist.builder.modules.source.MysqlSourceNode;
-import io.debezium.server.dist.builder.modules.source.PostgresSourceNode;
+import io.debezium.server.dist.builder.modules.sink.Kafka;
+import io.debezium.server.dist.builder.modules.sink.Pulsar;
+import io.debezium.server.dist.builder.modules.source.Mysql;
+import io.debezium.server.dist.builder.modules.source.Postgres;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -67,7 +65,7 @@ public class DebeziumServerPomBuilder {
     }
 
     public DebeziumServerPomBuilder addMysqlSource() {
-        MysqlSourceNode node = new MysqlSourceNode();
+        Mysql node = new Mysql();
         if (checkModuleNotExists(node)) {
             moduleNodes.add(node);
         }
@@ -75,7 +73,7 @@ public class DebeziumServerPomBuilder {
     }
 
     public DebeziumServerPomBuilder addPostgresSource() {
-        PostgresSourceNode node = new PostgresSourceNode();
+        Postgres node = new Postgres();
         if (checkModuleNotExists(node)) {
             moduleNodes.add(node);
         }
@@ -83,7 +81,7 @@ public class DebeziumServerPomBuilder {
     }
 
     public DebeziumServerPomBuilder addPulsarSink() {
-        PulsarSinkNode node = new PulsarSinkNode();
+        Pulsar node = new Pulsar();
         if (checkModuleNotExists(node)) {
             moduleNodes.add(node);
         }
@@ -91,7 +89,7 @@ public class DebeziumServerPomBuilder {
     }
 
     public DebeziumServerPomBuilder addKafkaSink() {
-        KafkaSinkNode node = new KafkaSinkNode();
+        Kafka node = new Kafka();
         if (checkModuleNotExists(node)) {
             moduleNodes.add(node);
         }
