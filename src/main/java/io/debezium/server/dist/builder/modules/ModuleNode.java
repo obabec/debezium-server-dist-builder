@@ -9,5 +9,4 @@ public interface ModuleNode {
     String DEBEZIUM_CONNECTOR_PREFIX = "debezium-connector-";
 
     String DEBEZIUM_SERVER_PREFIX = "debezium-server-";
-
 }
