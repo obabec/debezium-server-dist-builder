@@ -17,7 +17,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class RabbitMQ implements SinkNode, PropertiesConfig {
+public class RabbitMQ implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "rabbitmq";
 
     private final String type = "rabbitmq";

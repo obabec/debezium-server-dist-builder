@@ -18,7 +18,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class Pravega implements SinkNode, PropertiesConfig {
+public class Pravega implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "pravega";
 
     private final String type = "pravega";

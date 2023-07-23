@@ -5,6 +5,7 @@ import io.debezium.server.dist.builder.modules.sink.Kafka;
 import io.debezium.server.dist.builder.modules.sink.Pulsar;
 import io.debezium.server.dist.builder.modules.source.Mysql;
 import io.debezium.server.dist.builder.modules.source.Postgres;
+import io.sundr.builder.annotations.Buildable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -28,24 +29,19 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Add all nodes to builder, prepare configuration builder for the nodes
+
+//TODO: Here should be added evertyhing from Project builder
+// There should be added option to either stick with github repo of for example provide path to zip file and work with that
+// Figure problem with maven home automatic detection or maybe let this responsibility to CLI ?
+@Buildable
 public class DebeziumServerPomBuilder {
 
     private final Document pom;
     private static final Logger logger = LoggerFactory.getLogger(DebeziumServerPomBuilder.class);
 
-    private final List<ModuleNode> moduleNodes;
+    private DebeziumServer debeziumServer;
     private final Node dependenciesNode;
     private static final String POM_TEMPLATE = "template.xslt";
-
-    private boolean checkModuleNotExists(ModuleNode moduleNode) {
-       for (ModuleNode listNode : moduleNodes) {
-           if (listNode.getClass().equals(moduleNode.getClass())) {
-               return false;
-           }
-       }
-       return true;
-    }
 
     public DebeziumServerPomBuilder() {
         DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
@@ -58,50 +54,15 @@ public class DebeziumServerPomBuilder {
                 throw new RuntimeException("Base pom file from resources is corrupted!");
             }
             dependenciesNode = dependencyNodes.item(0);
-            moduleNodes = new ArrayList<>();
         } catch (IOException | ParserConfigurationException | SAXException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public DebeziumServerPomBuilder addMysqlSource() {
-        Mysql node = new Mysql();
-        if (checkModuleNotExists(node)) {
-            moduleNodes.add(node);
-        }
-        return this;
-    }
-
-    public DebeziumServerPomBuilder addPostgresSource() {
-        Postgres node = new Postgres();
-        if (checkModuleNotExists(node)) {
-            moduleNodes.add(node);
-        }
-        return this;
-    }
-
-    public DebeziumServerPomBuilder addPulsarSink() {
-        Pulsar node = new Pulsar();
-        if (checkModuleNotExists(node)) {
-            moduleNodes.add(node);
-        }
-        return this;
-    }
-
-    public DebeziumServerPomBuilder addKafkaSink() {
-        Kafka node = new Kafka();
-        if (checkModuleNotExists(node)) {
-            moduleNodes.add(node);
-        }
-        return this;
-    }
-
     public DebeziumServerPomBuilder build() {
         logger.trace("Started build of pom file");
-        for (ModuleNode node : moduleNodes) {
-            logger.trace("Adding " + node.toString() + " module to pom file");
-            dependenciesNode.appendChild(node.buildNode(pom));
-        }
+        dependenciesNode.appendChild(debeziumServer.getSinkNode().buildNode(pom));
+        dependenciesNode.appendChild(debeziumServer.getSourceNode().buildNode(pom));
         logger.trace("Finished building pom file");
         return this;
     }

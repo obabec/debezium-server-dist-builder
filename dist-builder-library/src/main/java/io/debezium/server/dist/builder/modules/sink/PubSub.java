@@ -16,7 +16,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class PubSub implements SinkNode, PropertiesConfig {
+public class PubSub implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "pubsub";
 
     private final String type = "pubsub";

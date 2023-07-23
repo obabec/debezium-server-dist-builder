@@ -18,7 +18,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class Pulsar implements SinkNode, PropertiesConfig {
+public class Pulsar implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "pulsar";
 
     private final String type = "pulsar";

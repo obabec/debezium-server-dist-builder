@@ -19,7 +19,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class NatsJetSteaming implements SinkNode, PropertiesConfig {
+public class NatsJetSteaming implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "nats-jetstream";
 
     private final String type = "nats-jetstream";

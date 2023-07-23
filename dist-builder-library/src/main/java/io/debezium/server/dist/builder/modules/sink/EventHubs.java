@@ -17,7 +17,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class EventHubs implements SinkNode, PropertiesConfig {
+public class EventHubs implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "eventhubs";
 
     private final String type = "eventhubs";

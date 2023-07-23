@@ -18,7 +18,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class Kinesis extends SinkConfig implements SinkNode, PropertiesConfig {
+public class Kinesis extends SinkConfig implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "kinesis";
 
     private final String type = "kinesis";

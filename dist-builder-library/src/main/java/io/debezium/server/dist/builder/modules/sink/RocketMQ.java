@@ -17,7 +17,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class RocketMQ implements SinkNode, PropertiesConfig {
+public class RocketMQ implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "rocketmq";
 
     private final String type = "rocketmq";
