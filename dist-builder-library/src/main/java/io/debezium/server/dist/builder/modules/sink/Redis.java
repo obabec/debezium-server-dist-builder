@@ -1,10 +1,8 @@
 package io.debezium.server.dist.builder.modules.sink;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.debezium.server.dist.builder.modules.config.sinks.types.RedisMessageFormat;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
@@ -18,7 +16,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class Redis implements SinkNode, PropertiesConfig {
+public class Redis implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "redis";
 
     private final String type = "redis";
@@ -80,7 +78,7 @@ public class Redis implements SinkNode, PropertiesConfig {
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.address", redisAddress);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.user", redisUser);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.password", redisPassword);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.ssl.enabled", redisSslEnabled.toString());
+        propertiesBuilder.putBoolean(SINK_NODE_CONFIG_PREFIX + "redis.ssl.enabled", redisSslEnabled);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.null.key", redisNullKey);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.null.value", redisNullValue);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.batch.size", redisBatchSize);
@@ -88,11 +86,11 @@ public class Redis implements SinkNode, PropertiesConfig {
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.retry.max.delay.ms", redisRetryMaxDelayMs);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.connection.timeout.ms", redisConnectionTimeoutMs);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.socket.timeout.ms", redisSocketTimeoutMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.wait.enabled", redisWaitEnabled.toString());
+        propertiesBuilder.putBoolean(SINK_NODE_CONFIG_PREFIX + "redis.wait.enabled", redisWaitEnabled);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.wait.timeout.ms", redisWaitTimeoutMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.wait.retry.enabled", redisWaitRetryEnabled.toString());
+        propertiesBuilder.putBoolean(SINK_NODE_CONFIG_PREFIX + "redis.wait.retry.enabled", redisWaitRetryEnabled);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.wait.retry.delay.ms", redisWaitRetryDelayMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.message.format", redisMessageFormat.toString().toLowerCase());
+        propertiesBuilder.putEnumWithLowerCase(SINK_NODE_CONFIG_PREFIX + "redis.message.format", redisMessageFormat);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.memory.threshold.percentage", redisMemoryThresholdPercentage);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "redis.memory.limit.mb", redisMemoryLimitMb);
 

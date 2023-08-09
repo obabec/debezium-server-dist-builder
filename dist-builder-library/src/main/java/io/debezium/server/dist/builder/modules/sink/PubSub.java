@@ -3,7 +3,6 @@ package io.debezium.server.dist.builder.modules.sink;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +15,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class PubSub implements SinkNode, PropertiesConfig {
+public class PubSub implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "pubsub";
 
     private final String type = "pubsub";
@@ -82,12 +81,12 @@ public class PubSub implements SinkNode, PropertiesConfig {
 
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.project.id", pubsubProjectId);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.ordering.enabled", pubsubOrderingEnabled.toString());
+        propertiesBuilder.putBoolean(SINK_NODE_CONFIG_PREFIX + "pubsub.ordering.enabled", pubsubOrderingEnabled);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.null.key", pubsubNullKey);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.batch.delay.threshold.ms", pubsubBatchDelayThresholdMs);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.batch.element.count.threshold", pubsubBatchElementCountThreshold + "L");
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.batch.request.byte.threshold", pubsubBatchRequestByteThreshold + "L");
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.enabled", pubsubFlowControlEnabled.toString());
+        propertiesBuilder.putBoolean(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.enabled", pubsubFlowControlEnabled);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.max.outstanding.messages", pubsubFlowControlMaxOutstandingMessages);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.max.outstanding.bytes", pubsubFlowControlMaxOutstandingBytes);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.total.timeout.ms", pubsubRetryTotalTimeoutMs);

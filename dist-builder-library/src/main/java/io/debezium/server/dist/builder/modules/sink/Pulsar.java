@@ -1,10 +1,8 @@
 package io.debezium.server.dist.builder.modules.sink;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +16,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class Pulsar implements SinkNode, PropertiesConfig {
+public class Pulsar implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "pulsar";
 
     private final String type = "pulsar";
@@ -55,12 +53,8 @@ public class Pulsar implements SinkNode, PropertiesConfig {
 
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.timeout", pulsarTimeout);
-        if (pulsarClient != null) {
-            propertiesBuilder.putAllWithPrefix("debezium.sink.pulsar.client.", pulsarClient);
-        }
-        if (pulsarProducer != null) {
-            propertiesBuilder.putAllWithPrefix("debezium.sink.pulsar.producer.", pulsarProducer);
-        }
+        propertiesBuilder.putAllWithPrefix("debezium.sink.pulsar.client.", pulsarClient);
+        propertiesBuilder.putAllWithPrefix("debezium.sink.pulsar.producer.", pulsarProducer);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.null.key", pulsarNullKey);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.tenant", pulsarTenant);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.namespace", pulsarNamespace);

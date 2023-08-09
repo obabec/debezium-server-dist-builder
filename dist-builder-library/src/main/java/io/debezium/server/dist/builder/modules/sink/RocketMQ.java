@@ -1,10 +1,8 @@
 package io.debezium.server.dist.builder.modules.sink;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +15,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class RocketMQ implements SinkNode, PropertiesConfig {
+public class RocketMQ implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "rocketmq";
 
     private final String type = "rocketmq";
@@ -39,7 +37,6 @@ public class RocketMQ implements SinkNode, PropertiesConfig {
     private String orgApacheRocketmqClientProducerDefaultMQProducer;
 
     private String ioDebeziumServerStreamNameMapper;
-
 
 
     @Override

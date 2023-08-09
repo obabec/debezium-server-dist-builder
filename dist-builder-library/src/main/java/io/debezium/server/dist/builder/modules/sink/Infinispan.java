@@ -1,10 +1,8 @@
 package io.debezium.server.dist.builder.modules.sink;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +15,7 @@ import java.util.Properties;
 @Buildable
 @Getter
 @Setter
-public class Infinispan implements SinkNode, PropertiesConfig {
+public class Infinispan implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "infinispan";
 
     private final String type = "infinispan";
@@ -32,7 +30,7 @@ public class Infinispan implements SinkNode, PropertiesConfig {
 
     private String infinispanPassword;
 
-    private String orgInfinispanClientHotrodRemote_Cache;
+    private String orgInfinispanClientHotrodRemoteCache;
 
     @Override
     public Node buildNode(Document document) {
@@ -57,7 +55,7 @@ public class Infinispan implements SinkNode, PropertiesConfig {
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.cache", infinispanCache);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.user", infinispanUser);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.password", infinispanPassword);
-        propertiesBuilder.put("org.infinispan.client.hotrod.RemoteCache", orgInfinispanClientHotrodRemote_Cache);
+        propertiesBuilder.put("org.infinispan.client.hotrod.RemoteCache", orgInfinispanClientHotrodRemoteCache);
 
         return propertiesBuilder.getProperties();
     }

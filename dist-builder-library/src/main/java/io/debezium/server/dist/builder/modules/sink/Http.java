@@ -1,10 +1,8 @@
 package io.debezium.server.dist.builder.modules.sink;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,11 +12,10 @@ import org.w3c.dom.Node;
 import java.util.Properties;
 
 
-
 @Buildable
 @Getter
 @Setter
-public class Http implements SinkNode, PropertiesConfig {
+public class Http implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "http";
 
     private final String type = "http";
@@ -70,13 +67,13 @@ public class Http implements SinkNode, PropertiesConfig {
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.retries", httpRetries);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.retry.interval.ms", httpRetryIntervalMs);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.headers.prefix", httpHeadersPrefix);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.headers.encode.base64", httpHeadersEnableBase64.toString());
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.type",httpAuthenticationType);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.username",httpAuthenticationJwtUsername);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.password",httpAuthenticationJwtPassword);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.url",httpAuthenticationJwtUrl);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.token_expiration",httpAuthenticationJwtTokenExpiration);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.refresh_token_expiration",httpAuthenticationJwtRefreshTokenExpiration);
+        propertiesBuilder.putBoolean(SINK_NODE_CONFIG_PREFIX + "http.headers.encode.base64", httpHeadersEnableBase64);
+        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.type", httpAuthenticationType);
+        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.username", httpAuthenticationJwtUsername);
+        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.password", httpAuthenticationJwtPassword);
+        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.url", httpAuthenticationJwtUrl);
+        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.token_expiration", httpAuthenticationJwtTokenExpiration);
+        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "http.authentication.jwt.refresh_token_expiration", httpAuthenticationJwtRefreshTokenExpiration);
 
 
         return propertiesBuilder.getProperties();

@@ -1,25 +1,21 @@
 package io.debezium.server.dist.builder;
 
 
-import java.lang.reflect.Field;
 import java.util.Properties;
 
-//TODO: this should be custom serializer which translates Nodes configs to actual properties format for server
 public class ConfigurationSerializer {
     static public String configToPropertiesFile(DebeziumServer debeziumServer) {
-        Class c = debeziumServer.getClass();
-        Field [] pFields = c.getDeclaredFields();
-        Properties fullProperties = new Properties();
+        StringBuilder stringBuilder = new StringBuilder();
+        Properties properties = debeziumServer.toProperties();
 
-        for (Field f: pFields) {
-            String attributeNameP = f.getName();
-            String attributeName;
+        for (Object key : properties.keySet()) {
+            String k = key.toString();
+            stringBuilder.append(k);
+            stringBuilder.append("=");
+            stringBuilder.append(properties.get(k).toString());
+            stringBuilder.append("\n");
         }
-        return null;
-    }
 
-
-    static private Properties resolveAttribute() {
-        return null;
+        return stringBuilder.toString();
     }
 }

@@ -1,12 +1,12 @@
 package io.debezium.server.dist.builder.modules.source;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SourceNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.sources.SqlBasedConnectorConfig;
 import io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig;
 import io.debezium.server.dist.builder.modules.config.sources.types.SnapshotIsolationMode;
+import io.debezium.server.dist.builder.modules.config.sources.types.SnapshotLockingMode;
 import io.debezium.server.dist.builder.modules.config.sources.types.SourceStructVersion;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
 
     private Boolean skipMessagesWithoutChange;
 
-    private String snapshotLockingMode;
+    private SnapshotLockingMode snapshotLockingMode;
 
     private SnapshotIsolationMode snapshotIsolationMode;
 
@@ -53,6 +53,7 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
 
     //private HashMap<String, String> customMetricTags;
     private SchemaHistoryInternalConfig schemaHistoryInternalConfig;
+
     @Override
     public Node buildNode(Document document) {
         return new ModuleDependencyBuilder(document)
@@ -71,22 +72,20 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.instance", databaseInstance);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "database.names", String.join(",", databaseNames));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "schema.include.list", String.join(",", schemaIncludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "schema.exclude.list", String.join(",", schemaExcludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange.toString());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode.toString().toLowerCase());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.isolation.mode", snapshotIsolationMode.toString().toLowerCase());
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "database.names", databaseNames);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "schema.include.list", schemaIncludeList);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "schema.exclude.list", schemaExcludeList);
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.isolation.mode", snapshotIsolationMode);
         propertiesBuilder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
         propertiesBuilder.put(debeziumServerSourcePrefix + "query.fetch.size", queryFetchSize);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "source.struct.version", sourceStructVersion.toString().toLowerCase());
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "source.struct.version", sourceStructVersion);
         propertiesBuilder.put(debeziumServerSourcePrefix + "retriable.restart.connector.wait.ms", retriableRestartConnectorWaitMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "incremental.snapshot.allow.schema.changes", incrementalSnapshotAllowSchemaChanges.toString());
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "incremental.snapshot.allow.schema.changes", incrementalSnapshotAllowSchemaChanges);
         propertiesBuilder.put(debeziumServerSourcePrefix + "max.iteration.transactions", maxIterationTransaction);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "incremental.snapshot.option.recompile", incrementalSnapshotAllowSchemaChanges.toString());
-        if (schemaHistoryInternalConfig != null) {
-            propertiesBuilder.putAll(schemaHistoryInternalConfig.toProperties());
-        }
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "incremental.snapshot.option.recompile", incrementalSnapshotAllowSchemaChanges);
+        propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }
 }

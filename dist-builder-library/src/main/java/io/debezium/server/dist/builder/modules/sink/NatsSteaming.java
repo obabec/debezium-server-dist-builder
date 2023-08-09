@@ -1,10 +1,8 @@
 package io.debezium.server.dist.builder.modules.sink;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,11 +12,10 @@ import org.w3c.dom.Node;
 import java.util.Properties;
 
 
-
 @Buildable
 @Getter
 @Setter
-public class NatsSteaming implements SinkNode, PropertiesConfig {
+public class NatsSteaming implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "nats-streaming";
 
     private final String type = "nats-streaming";
