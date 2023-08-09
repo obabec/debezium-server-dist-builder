@@ -1,10 +1,8 @@
 package io.debezium.server.dist.builder.modules.sink;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +10,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import java.util.Properties;
-
 
 
 @Buildable
@@ -51,7 +48,7 @@ public class Pravega implements SinkNode {
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pravega.controller.uri", pravegaControllerUri);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pravega.scope", pravegaScope);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pravega.transaction", pravegaTransaction.toString());
+        propertiesBuilder.putBoolean(SINK_NODE_CONFIG_PREFIX + "pravega.transaction", pravegaTransaction);
 
         propertiesBuilder.put("io.debezium.server.StreamNameMapper", ioDebeziumServerStreamNameMapper);
 

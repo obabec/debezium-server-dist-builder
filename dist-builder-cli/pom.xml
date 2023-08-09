@@ -18,7 +18,7 @@
         <dependency>
             <artifactId>dist-builder-library</artifactId>
             <groupId>io.debezium</groupId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

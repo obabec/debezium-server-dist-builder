@@ -1,10 +1,8 @@
 package io.debezium.server.dist.builder.modules.sink;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,10 +53,7 @@ public class RabbitMQ implements SinkNode {
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "rabbitmq.connection.host", rabbitmqConnectionHost);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "rabbitmq.connection.port", rabbitmqConnectionPort);
 
-        if (rabbitmqConnection != null) {
-            propertiesBuilder.putAllWithPrefix("debezium.sink.rabbitmq.connection.", rabbitmqConnection);
-        }
-
+        propertiesBuilder.putAllWithPrefix("debezium.sink.rabbitmq.connection.", rabbitmqConnection);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "rabbitmq.ackTimeout", rabbitmqAckTimeout);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "rabbitmq.routingKey", rabbitmqRoutingKey);
 

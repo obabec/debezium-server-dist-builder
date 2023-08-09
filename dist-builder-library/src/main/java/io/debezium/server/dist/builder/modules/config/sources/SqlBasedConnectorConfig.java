@@ -5,13 +5,11 @@ import io.debezium.server.dist.builder.modules.config.sources.types.BinaryHandli
 import io.debezium.server.dist.builder.modules.config.sources.types.DecimalHandlingMode;
 import io.debezium.server.dist.builder.modules.config.sources.types.ProcessingFailureHandlingMode;
 import io.debezium.server.dist.builder.modules.config.sources.types.TimePrecisionMode;
-import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 import java.util.Properties;
-
 
 
 @Getter
@@ -55,7 +53,6 @@ public class SqlBasedConnectorConfig extends ConnectorConfig {
     protected ProcessingFailureHandlingMode eventProcessingFailureHandlingMode;
 
 
-
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
@@ -63,23 +60,23 @@ public class SqlBasedConnectorConfig extends ConnectorConfig {
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.port", databasePort);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.user", databaseUser);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.password", databasePassword);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "table.include.list", String.join(",", tableIncludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "table.exclude.list", String.join(",", tableExcludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "column.exclude.list", String.join(",", columnExcludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "column.include.list", String.join(",", columnIncludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "time.precision.mode", timePrecisionMode.toString().toLowerCase());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "decimal.handling.mode", decimalHandlingMode.toString().toLowerCase());
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "table.include.list", tableIncludeList);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "table.exclude.list", tableExcludeList);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "column.exclude.list", columnExcludeList);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "column.include.list", columnIncludeList);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "time.precision.mode", timePrecisionMode);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "decimal.handling.mode", decimalHandlingMode);
         propertiesBuilder.put(debeziumServerSourcePrefix + "include.schema.changes", includeSchemaChanges);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "column.truncate.to.length.chars", String.join(",", columnTruncateToLengthChars));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "column.mask.with.length.chars", String.join(",", columnMaskWithLengthChars));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "column.propagate.source.type", String.join(",", columnPropagateSourceType));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "datatype.propagate.source.type", String.join(",", datatypePropagateSourceType));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "message.key.columns", String.join(",", messageKeyColumns));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "converters", String.join(",", converters));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "binary.handling.mode", binaryHandlingMode.toString().toLowerCase());
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "column.truncate.to.length.chars", columnTruncateToLengthChars);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "column.mask.with.length.chars", columnMaskWithLengthChars);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "column.propagate.source.type", columnPropagateSourceType);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "datatype.propagate.source.type", datatypePropagateSourceType);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "message.key.columns", messageKeyColumns);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "converters", converters);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "binary.handling.mode", binaryHandlingMode);
         propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.lock.timeout.ms", snapshotLockTimeoutMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.select.statement.overrides", String.join(",", snapshotSelectStatementOverrides));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "event.processing.failure.handling.mode", eventProcessingFailureHandlingMode.toString());
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "snapshot.select.statement.overrides", snapshotSelectStatementOverrides);
+        propertiesBuilder.putEnum(debeziumServerSourcePrefix + "event.processing.failure.handling.mode", eventProcessingFailureHandlingMode);
         return propertiesBuilder.getProperties();
     }
 

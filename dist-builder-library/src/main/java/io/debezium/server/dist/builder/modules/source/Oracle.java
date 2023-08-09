@@ -1,7 +1,6 @@
 package io.debezium.server.dist.builder.modules.source;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SourceNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.sources.SqlBasedConnectorConfig;
@@ -9,10 +8,8 @@ import io.debezium.server.dist.builder.modules.config.sources.logmine.LogMiningC
 import io.debezium.server.dist.builder.modules.config.sources.types.BinaryHandlingMode;
 import io.debezium.server.dist.builder.modules.config.sources.types.IntervalHandlingMode;
 import io.debezium.server.dist.builder.modules.config.sources.types.OracleConnectionAdapter;
-import io.debezium.server.dist.builder.modules.config.sources.types.ProcessingFailureHandlingMode;
 import io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig;
 import io.debezium.server.dist.builder.modules.config.sources.types.SnapshotLockingMode;
-import io.debezium.server.dist.builder.modules.config.sources.types.SnapshotMode;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,49 +26,30 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
     private final String ARTIFACT_ID = DEBEZIUM_CONNECTOR_PREFIX + "oracle";
 
     private final String connectorClass = "io.debezium.connector.oracle.OracleConnector";
-
+    // TODO: check if this is list of IP addresses
+    protected List<String> racNodes;
     private String databaseDbname;
-
     private String databaseUrl;
-
     private String databasePbdName;
-
     private OracleConnectionAdapter databaseConnectionAdapter;
-
     private List<String> schemaIncludeList;
-
     private Boolean skipMessagesWithoutChange;
-
-
     private Boolean includeSchemaComments;
     private List<String> schemaExcludeList;
-
     private BinaryHandlingMode binaryHandlingMode;
-
     private IntervalHandlingMode intervalHandlingMode;
-
     private Integer pollIntervalMs;
-
     private Integer heartbeatIntervalMs;
-
     private String heartbeatActionQuery;
-
     private Integer queryFetchSize;
-
     private SnapshotLockingMode snapshotLockingMode;
-
     private LogMiningConfig logMiningConfig;
     private Boolean lobEnabled;
     private String unavailableValuePlaceholder;
-
-
-    // TODO: check if this is list of IP addresses
-    protected List<String> racNodes;
     private SchemaHistoryInternalConfig schemaHistoryInternalConfig;
 
     public Oracle() {
     }
-
 
 
     @Override
@@ -94,29 +72,26 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.dbname", databaseDbname);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.url", databaseUrl);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.pdb.name", databasePbdName);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "database.connection.adapter", databaseConnectionAdapter.toString().toLowerCase());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.select.statement.overrides", snapshotSelectStatementOverrides);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "schema.include.list", String.join(",", schemaIncludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange.toString());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "include.schema.comments", includeSchemaComments.toString());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "schema.exclude.list", String.join(",", schemaExcludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "binary.handling.mode", binaryHandlingMode.toString().toLowerCase());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "interval.handling.mode", intervalHandlingMode.toString().toLowerCase());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "event.processing.failure.handling.mode", eventProcessingFailureHandlingMode.toString().toLowerCase());
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "database.connection.adapter", databaseConnectionAdapter);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "snapshot.select.statement.overrides", snapshotSelectStatementOverrides);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "schema.include.list", schemaIncludeList);
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange);
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "include.schema.comments", includeSchemaComments);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "schema.exclude.list", schemaExcludeList);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "binary.handling.mode", binaryHandlingMode);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "interval.handling.mode", intervalHandlingMode);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "event.processing.failure.handling.mode", eventProcessingFailureHandlingMode);
         propertiesBuilder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
         propertiesBuilder.put(debeziumServerSourcePrefix + "heartbeat.interval.ms", heartbeatIntervalMs);
         propertiesBuilder.put(debeziumServerSourcePrefix + "heartbeat.action.query", heartbeatActionQuery);
         propertiesBuilder.put(debeziumServerSourcePrefix + "query.fetch.size", queryFetchSize);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode.toString().toLowerCase());
-        if (logMiningConfig != null) {
-            propertiesBuilder.putAll(logMiningConfig.toProperties());
-        }
-        propertiesBuilder.put(debeziumServerSourcePrefix + "lob.enabled", lobEnabled.toString());
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode);
+        propertiesBuilder.putAll(logMiningConfig);
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "lob.enabled", lobEnabled);
         propertiesBuilder.put(debeziumServerSourcePrefix + "unavailable.value.placeholder", unavailableValuePlaceholder);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "rac.nodes", String.join(",", racNodes));
-        if (schemaHistoryInternalConfig != null) {
-            propertiesBuilder.putAll(schemaHistoryInternalConfig.toProperties());
-        }
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "rac.nodes", racNodes);
+        propertiesBuilder.putAll(schemaHistoryInternalConfig);
+
         return propertiesBuilder.getProperties();
     }
 }

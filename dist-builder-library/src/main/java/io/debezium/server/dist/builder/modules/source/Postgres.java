@@ -3,7 +3,6 @@ package io.debezium.server.dist.builder.modules.source;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SourceNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.sources.SqlBasedConnectorConfig;
@@ -118,8 +117,8 @@ public class Postgres extends SqlBasedConnectorConfig implements SourceNode {
         propertiesBuilder.put(debeziumServerSourcePrefix + "slot.drop.on.stop", slotDropOnStop);
         propertiesBuilder.put(debeziumServerSourcePrefix + "publication.name", publicationName);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.dbname", databaseDbname);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "schema.include.list", String.join(",", schemaIncludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "schema.exclude.list", String.join(",", schemaExcludeList));
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "schema.include.list", schemaIncludeList);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "schema.exclude.list", schemaExcludeList);
 
         try {
             propertiesBuilder.put(debeziumServerSourcePrefix + "hstore.handling.mode", new ObjectMapper().writeValueAsString(hstoreHandlingMode));
@@ -127,32 +126,32 @@ public class Postgres extends SqlBasedConnectorConfig implements SourceNode {
             throw new RuntimeException(e);
         }
 
-        propertiesBuilder.put(debeziumServerSourcePrefix + "database.sslmode", databaseSSLMode.toString().toLowerCase());
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "database.sslmode", databaseSSLMode);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.sslcert", databaseSSLCert);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.sslkey", databaseSSLKey);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.sslpassword", databaseSSLPassword);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.sslrootcert", databaseSSLRootCert);
         propertiesBuilder.put(debeziumServerSourcePrefix + "database.tcpKeepAlive", databaseTCPKeepAlive);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange.toString());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "publication.autocreate.mode", publicationAutocreateMode.toString().toLowerCase());
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "publication.autocreate.mode", publicationAutocreateMode);
         propertiesBuilder.put(debeziumServerSourcePrefix + "replica.identity.autoset.values", replicaIdentityAutosetValues);
         propertiesBuilder.put(debeziumServerSourcePrefix + "money.fraction.digits", moneyFractionDigits);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "message.prefix.include.list", String.join(",", messagePrefixIncludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "message.prefix.exclude.list", String.join(",", messagePrefixExcludeList));
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode.toString().toLowerCase());
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "message.prefix.include.list", messagePrefixIncludeList);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "message.prefix.exclude.list", messagePrefixExcludeList);
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode);
         propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.custom.class", snapshotCustomClass);
         propertiesBuilder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "include.unknown.datatypes", includeUnknownDatatypes.toString());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "database.initial.statements", String.join(",", databaseInitialStatements));
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "include.unknown.datatypes", includeUnknownDatatypes);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "database.initial.statements", databaseInitialStatements);
         propertiesBuilder.put(debeziumServerSourcePrefix + "status.update.interval.ms", statusUpdateIntervalMs);
         propertiesBuilder.put(debeziumServerSourcePrefix + "heartbeat.action.query", heartbeatActionQuery);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "schema.refresh.mode", schemaRefreshMode.toString().toLowerCase());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "slot.stream.params", String.join(",", slotStreamParams));
+        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "schema.refresh.mode", schemaRefreshMode);
+        propertiesBuilder.putList(debeziumServerSourcePrefix + "slot.stream.params", slotStreamParams);
         propertiesBuilder.put(debeziumServerSourcePrefix + "slot.max.retries", slotMaxRetries);
         propertiesBuilder.put(debeziumServerSourcePrefix + "slot.retry.delay.ms", slotRetryDelayMs);
         propertiesBuilder.put(debeziumServerSourcePrefix + "unavailable.value.placeholder", unavailableValuePlaceholder);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "provide.transaction.metadata", provideTransactionMetadata.toString());
-        propertiesBuilder.put(debeziumServerSourcePrefix + "flush.lsn.source", flushLsnSource.toString());
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "provide.transaction.metadata", provideTransactionMetadata);
+        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "flush.lsn.source", flushLsnSource);
         propertiesBuilder.put(debeziumServerSourcePrefix + "retriable.restart.connector.wait.ms", retriableRestartConnectorWaitMs);
         propertiesBuilder.put(debeziumServerSourcePrefix + "xmin.fetch.interval.ms", xminFetchIntervalMs);
 

@@ -1,7 +1,6 @@
 package io.debezium.server.dist.builder.modules.source;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SourceNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.sources.SqlBasedConnectorConfig;
@@ -34,7 +33,6 @@ public class Db2 extends SqlBasedConnectorConfig implements SourceNode {
     }
 
 
-
     @Override
     public Node buildNode(Document document) {
         return new ModuleDependencyBuilder(document)
@@ -53,11 +51,9 @@ public class Db2 extends SqlBasedConnectorConfig implements SourceNode {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
 
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.isolation.mode", snapshotIsolationMode);
+        propertiesBuilder.putEnum(debeziumServerSourcePrefix + "snapshot.isolation.mode", snapshotIsolationMode);
         propertiesBuilder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
-        if (schemaHistoryInternalConfig != null) {
-            propertiesBuilder.putAll(schemaHistoryInternalConfig.toProperties());
-        }
+        propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }
 }

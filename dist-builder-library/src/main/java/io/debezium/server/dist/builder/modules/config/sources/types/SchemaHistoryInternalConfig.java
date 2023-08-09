@@ -2,7 +2,6 @@ package io.debezium.server.dist.builder.modules.config.sources.types;
 
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
-import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,14 +40,14 @@ public class SchemaHistoryInternalConfig implements PropertiesConfig {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
         String PREFIX = "debezium.source.schema.history.internal";
         propertiesBuilder.put(PREFIX + "kafka.topic", kafkaTopic);
-        propertiesBuilder.put(PREFIX + "kafka.bootstrap.servers", String.join(",", kafkaBootstrapServers));
+        propertiesBuilder.putList(PREFIX + "kafka.bootstrap.servers", kafkaBootstrapServers);
         propertiesBuilder.put(PREFIX + "kafka.recovery.poll.interval.ms", kafkaRecoveryPollIntervalMs);
         propertiesBuilder.put(PREFIX + "kafka.query.timeout.ms", kafkaQueryTimeoutMs);
         propertiesBuilder.put(PREFIX + "kafka.create.timeout.ms", kafkaCreateTimeoutMs);
         propertiesBuilder.put(PREFIX + "kafka.recovery.attempts", kafkaRecoveryAttempts);
-        propertiesBuilder.put(PREFIX + "skip.unparseable.ddl", skipUnparseableDdl.toString());
-        propertiesBuilder.put(PREFIX + "store.only.captured.ddl", storeOnlyCapturedTablesDdl.toString());
-        propertiesBuilder.put(PREFIX + "store.only.captured.databases.ddl", storeOnlyCapturedDatabasesDdl.toString());
+        propertiesBuilder.putBoolean(PREFIX + "skip.unparseable.ddl", skipUnparseableDdl);
+        propertiesBuilder.putBoolean(PREFIX + "store.only.captured.ddl", storeOnlyCapturedTablesDdl);
+        propertiesBuilder.putBoolean(PREFIX + "store.only.captured.databases.ddl", storeOnlyCapturedDatabasesDdl);
         return propertiesBuilder.getProperties();
     }
 }

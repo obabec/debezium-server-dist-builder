@@ -1,10 +1,8 @@
 package io.debezium.server.dist.builder.modules.sink;
 
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
-import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +11,6 @@ import org.w3c.dom.Node;
 
 import java.util.List;
 import java.util.Properties;
-
 
 
 @Buildable
@@ -56,7 +53,7 @@ public class NatsJetSteaming implements SinkNode {
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.url", natsJetstreamUrl);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.create-stream", natsJetstreamCreateStream);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.subjects", String.join(",", natsJetstreamSubjects));
+        propertiesBuilder.putList(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.subjects", natsJetstreamSubjects);
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.storage", natsJetstreamStorage);
 
         propertiesBuilder.put("io.nats.client.JetStream", ioNatsClientJetStream);

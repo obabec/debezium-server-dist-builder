@@ -2,7 +2,6 @@ package io.debezium.server.dist.builder.modules.config.sources.types;
 
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
-import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 

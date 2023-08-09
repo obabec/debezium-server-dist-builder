@@ -1,7 +1,6 @@
 package io.debezium.server.dist.builder;
 
 
-import java.lang.reflect.Field;
 import java.util.Properties;
 
 public class ConfigurationSerializer {
@@ -13,7 +12,7 @@ public class ConfigurationSerializer {
             String k = key.toString();
             stringBuilder.append(k);
             stringBuilder.append("=");
-            stringBuilder.append(properties.getProperty(k));
+            stringBuilder.append(properties.get(k).toString());
             stringBuilder.append("\n");
         }
 
