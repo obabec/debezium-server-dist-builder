@@ -1,5 +1,6 @@
 package io.debezium.server.dist.builder;
 
+import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
@@ -50,6 +51,11 @@ public class DebeziumServerDistributionBuilder {
     private Node dependenciesNode;
 
     public DebeziumServerDistributionBuilder() {
+    }
+
+    public DebeziumServerDistributionBuilder withVersion(String version) {
+        ModuleDependencyBuilder.version = version;
+        return this;
     }
 
     public DebeziumServerDistributionBuilder withDebeziumServer(DebeziumServer server) {

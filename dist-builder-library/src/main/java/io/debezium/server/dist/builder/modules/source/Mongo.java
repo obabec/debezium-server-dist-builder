@@ -81,10 +81,7 @@ public class Mongo extends ConnectorConfig implements SourceNode {
 
     @Override
     public Node buildNode(Document document) {
-        return new ModuleDependencyBuilder(document)
-                .setGroupId(GROUP_ID)
-                .setArtifactId(ARTIFACT_ID)
-                .buildDependency();
+        return ModuleDependencyBuilder.buildDependency(document, ARTIFACT_ID);
     }
 
     @Override

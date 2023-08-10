@@ -3,47 +3,41 @@ package io.debezium.server.dist.builder.modules;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import javax.print.Doc;
+
 public class ModuleDependencyBuilder {
-    private final Document document;
-    private String groupId;
-    private String artifactId;
-    private String version = "${version.debezium}";
+    private static String groupId = "io.debezium";
+    public static String version = "${version.debezium}";
 
-    public ModuleDependencyBuilder(Document document) {
-        this.document = document;
+    public static Node buildDependency(Document document, String artifactId) {
+        Node dependency = buildBase(document, artifactId);
+
+        Node versionNode = document.createElement("version");
+        versionNode.setTextContent(version);
+        dependency.appendChild(versionNode);
+        return dependency;
     }
 
-    public ModuleDependencyBuilder setGroupId(String groupId) {
-        this.groupId = groupId;
-        return this;
+    public static Node buildDependency(Document document, String artifactId, String newVersion) {
+        Node dependency = buildBase(document, artifactId);
+
+        Node versionNode = document.createElement("version");
+        versionNode.setTextContent(newVersion);
+        dependency.appendChild(versionNode);
+
+        return dependency;
     }
 
-    public ModuleDependencyBuilder setArtifactId(String artifactId) {
-        this.artifactId = artifactId;
-        return this;
-    }
-
-    public ModuleDependencyBuilder setVersion(String version) {
-        this.version = version;
-        return this;
-    }
-
-    public Node buildDependency() {
+    private static Node buildBase(Document document, String artifactId) {
         Node dependency = document.createElement("dependency");
 
-        Node groupId = document.createElement("groupId");
-        groupId.setTextContent(this.groupId);
-        dependency.appendChild(groupId);
+        Node groupIdNode = document.createElement("groupId");
+        groupIdNode.setTextContent(groupId);
+        dependency.appendChild(groupIdNode);
 
-        Node artifactId = document.createElement("artifactId");
-        artifactId.setTextContent(this.artifactId);
-        dependency.appendChild(artifactId);
-
-        if (this.version != null) {
-            Node version = document.createElement("version");
-            version.setTextContent(this.version);
-            dependency.appendChild(version);
-        }
+        Node artifactNode = document.createElement("artifactId");
+        artifactNode.setTextContent(artifactId);
+        dependency.appendChild(artifactNode);
         return dependency;
     }
 
