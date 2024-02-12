@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
-import org.apache.maven.shared.utils.StringUtils;
 
 import java.io.IOException;
 
@@ -14,6 +12,7 @@ public class CustomStringDeserializer extends StdDeserializer<String> {
     public CustomStringDeserializer() {
         this(null);
     }
+
     protected CustomStringDeserializer(Class<?> vc) {
         super(vc);
     }

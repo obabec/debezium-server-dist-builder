@@ -21,6 +21,7 @@ public class SourceNodeDeserializer extends StdDeserializer<SourceNode> {
     public SourceNodeDeserializer() {
         this(null);
     }
+
     public SourceNodeDeserializer(Class<?> vc) {
         super(vc);
     }

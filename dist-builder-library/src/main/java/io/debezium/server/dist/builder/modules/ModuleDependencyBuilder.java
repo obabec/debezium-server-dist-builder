@@ -3,11 +3,9 @@ package io.debezium.server.dist.builder.modules;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.print.Doc;
-
 public class ModuleDependencyBuilder {
-    private static String groupId = "io.debezium";
     public static String version = "${version.debezium}";
+    private static String groupId = "io.debezium";
 
     public static Node buildDependency(Document document, String artifactId) {
         Node dependency = buildBase(document, artifactId);

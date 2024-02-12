@@ -47,6 +47,7 @@ public class PropertiesBuilder {
             properties.put(key, value);
         }
     }
+
     public void putAll(PropertiesConfig p) {
         if (p != null) {
             properties.putAll(p.toProperties());

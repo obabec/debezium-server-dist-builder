@@ -17,6 +17,7 @@ public class StorageConfigDeserializer extends StdDeserializer<StorageConfig> {
     public StorageConfigDeserializer() {
         this(null);
     }
+
     protected StorageConfigDeserializer(Class<?> vc) {
         super(vc);
     }

@@ -24,11 +24,12 @@ import io.debezium.server.dist.builder.modules.sink.RocketMQ;
 
 import java.io.IOException;
 
-public class SinkNodeDeserializer extends StdDeserializer<SinkNode>  {
+public class SinkNodeDeserializer extends StdDeserializer<SinkNode> {
 
     public SinkNodeDeserializer() {
         this(null);
     }
+
     protected SinkNodeDeserializer(Class<?> vc) {
         super(vc);
     }

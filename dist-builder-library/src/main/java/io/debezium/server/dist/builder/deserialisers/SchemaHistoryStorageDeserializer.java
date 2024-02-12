@@ -13,11 +13,12 @@ import io.debezium.server.dist.builder.modules.source.storage.SchemaHistoryStora
 
 import java.io.IOException;
 
-public class SchemaHistoryStorageDeserializer extends StdDeserializer<SchemaHistoryStorage>  {
+public class SchemaHistoryStorageDeserializer extends StdDeserializer<SchemaHistoryStorage> {
 
     public SchemaHistoryStorageDeserializer() {
         this(null);
     }
+
     public SchemaHistoryStorageDeserializer(Class<?> vc) {
         super(vc);
     }
