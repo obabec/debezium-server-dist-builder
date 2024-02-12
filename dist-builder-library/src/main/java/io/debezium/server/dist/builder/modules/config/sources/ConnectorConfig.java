@@ -44,8 +44,8 @@ public class ConnectorConfig implements PropertiesConfig {
     protected Integer topicCacheSize;
     protected String topicHeartbeatPrefix;
     protected String topicTransaction;
-    protected SignalConfiguration signalConfiguration;
     protected String notificationsSinkTopicName;
+    protected SignalConfiguration signalConfiguration;
 
     public ConnectorConfig() {
     }

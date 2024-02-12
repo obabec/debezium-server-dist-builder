@@ -54,6 +54,9 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
     //private HashMap<String, String> customMetricTags;
     private SchemaHistoryInternalConfig schemaHistoryInternalConfig;
 
+    public SqlServer() {
+    }
+
     @Override
     public Node buildNode(Document document) {
         return ModuleDependencyBuilder.buildDependency(document, ARTIFACT_ID);

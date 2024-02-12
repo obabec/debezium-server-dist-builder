@@ -78,6 +78,8 @@ public class Mongo extends ConnectorConfig implements SourceNode {
 
     private String cursorMaxAwaitTimeMs;
 
+    public Mongo() {
+    }
 
     @Override
     public Node buildNode(Document document) {
