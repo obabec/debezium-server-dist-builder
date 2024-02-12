@@ -24,6 +24,9 @@ public class DebeziumServer implements PropertiesConfig {
     private InternalSchemaHistory internalSchemaHistory;
     private OffsetStorage offsetStorage;
 
+    public DebeziumServer() {
+    }
+
     @Override
     public Properties toProperties() {
         PropertiesBuilder builder = new PropertiesBuilder();

@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>dist-builder-library</module>
-        <module>dist-builder-cli</module>
+        <module>dist-builder-example</module>
     </modules>
     <build>
         <plugins>

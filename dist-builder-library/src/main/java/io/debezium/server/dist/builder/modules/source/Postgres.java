@@ -95,6 +95,9 @@ public class Postgres extends SqlBasedConnectorConfig implements SourceNode {
 
     private Integer xminFetchIntervalMs;
 
+    public Postgres() {
+    }
+
     @Override
     public Node buildNode(Document document) {
         return ModuleDependencyBuilder.buildDependency(document, ARTIFACT_ID);
