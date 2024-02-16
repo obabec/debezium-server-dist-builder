@@ -62,6 +62,10 @@ public class MetadataGenerator {
     }
 
 
+    private void printList(Class c, MetadataModelObject metadataModelObject) {
+
+    }
+
     private void printFields(Class c, MetadataModelObject metadataModelObject, String name) throws ClassNotFoundException {
         if (!c.isInterface()) {
             metadataModelObject.setClazz(c.getTypeName());
@@ -101,7 +105,6 @@ public class MetadataGenerator {
         while (clazz != Object.class) {
             currentFields.addAll(Arrays.asList(clazz.getDeclaredFields()));
             clazz = clazz.getSuperclass();
-
         }
 
 
@@ -113,7 +116,6 @@ public class MetadataGenerator {
             if (type.contains("io.debezium")) {
                 field.setType("class");
                 Class x = ClassLoader.getSystemClassLoader().loadClass(f.getType().getName());
-                //field.setName(type.substring(type.lastIndexOf('.') + 1));
             } else {
                 field.setType(f.getAnnotatedType().toString());
             }
@@ -130,8 +132,12 @@ public class MetadataGenerator {
                     }
                     field.setVariants(variants);
                 } else if (x.isInterface()) {
-                    field.setType("interface");
-                    processInterfaceClass(x, field);
+                    if (x.getTypeName().contains("List")) {
+                        field.setType("DependencyList");
+                    } else {
+                        field.setType("interface");
+                        processInterfaceClass(x, field);
+                    }
                 } else {
                     printFields(x, field, field.name);
                 }

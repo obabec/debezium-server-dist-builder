@@ -1,17 +1,23 @@
-package io.debezium.server.dist.builder.deserialisers;
+package io.debezium.server.dist.builder.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import io.debezium.server.dist.builder.deserialisers.CommaSeparatedListProblemHandler;
+import io.debezium.server.dist.builder.deserialisers.CustomStringDeserializer;
+import io.debezium.server.dist.builder.deserialisers.SchemaHistoryStorageDeserializer;
+import io.debezium.server.dist.builder.deserialisers.SinkNodeDeserializer;
+import io.debezium.server.dist.builder.deserialisers.SourceNodeDeserializer;
+import io.debezium.server.dist.builder.deserialisers.StorageConfigDeserializer;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.SourceNode;
 import io.debezium.server.dist.builder.modules.source.storage.SchemaHistoryStorage;
 import io.debezium.server.dist.builder.modules.source.storage.StorageConfig;
 
 public class DeserializationUtils {
-    public static ObjectMapper getCustomMapper() {
+    public static ObjectMapper getCustomDeserializationMapper() {
         return JsonMapper.builder().addHandler(new CommaSeparatedListProblemHandler())
                 .serializationInclusion(JsonInclude.Include.NON_NULL)
                 .serializationInclusion(JsonInclude.Include.NON_EMPTY)

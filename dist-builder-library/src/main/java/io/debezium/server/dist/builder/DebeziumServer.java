@@ -1,5 +1,6 @@
 package io.debezium.server.dist.builder;
 
+import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.SourceNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
@@ -10,6 +11,7 @@ import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Properties;
 
 
@@ -23,6 +25,7 @@ public class DebeziumServer implements PropertiesConfig {
     // Generic server config
     private InternalSchemaHistory internalSchemaHistory;
     private OffsetStorage offsetStorage;
+    private List<Dependency> dependencyList;
 
     public DebeziumServer() {
     }

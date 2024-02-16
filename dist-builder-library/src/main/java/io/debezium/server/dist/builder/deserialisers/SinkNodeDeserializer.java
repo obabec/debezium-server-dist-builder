@@ -21,6 +21,7 @@ import io.debezium.server.dist.builder.modules.sink.Pulsar;
 import io.debezium.server.dist.builder.modules.sink.RabbitMQ;
 import io.debezium.server.dist.builder.modules.sink.Redis;
 import io.debezium.server.dist.builder.modules.sink.RocketMQ;
+import io.debezium.server.dist.builder.utils.DeserializationUtils;
 
 import java.io.IOException;
 
@@ -39,7 +40,7 @@ public class SinkNodeDeserializer extends StdDeserializer<SinkNode> {
         JsonNode node = jsonParser.readValueAsTree();
         if (node.fields().hasNext()) {
             String key = node.fields().next().getKey();
-            ObjectMapper mapper = DeserializationUtils.getCustomMapper();
+            ObjectMapper mapper = DeserializationUtils.getCustomDeserializationMapper();
 
             switch (key) {
                 case "EvenHubs":

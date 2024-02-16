@@ -12,7 +12,6 @@ public class MetadataModelObject {
     List<MetadataModelObject> fields;
     List<MetadataModelObject> options;
     List<String> variants;
-
     Boolean selected;
     String value;
 

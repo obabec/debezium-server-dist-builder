@@ -1,5 +1,6 @@
 package io.debezium.server.dist.builder.modules.source;
 
+import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SourceNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
@@ -53,8 +54,8 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
 
 
     @Override
-    public Node buildNode(Document document) {
-        return ModuleDependencyBuilder.buildDependency(document, ARTIFACT_ID);
+    public Node buildNode(Document document, List<Dependency> dependencyList) {
+        return ModuleDependencyBuilder.buildDependency(document, ARTIFACT_ID, dependencyList);
     }
 
     @Override

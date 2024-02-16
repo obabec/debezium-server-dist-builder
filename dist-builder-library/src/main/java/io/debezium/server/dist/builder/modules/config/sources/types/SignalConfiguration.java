@@ -27,7 +27,9 @@ public class SignalConfiguration implements PropertiesConfig {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
         String PREFIX = "debezium.source.signal.kafka";
         propertiesBuilder.put(PREFIX + "topic", topic);
-        propertiesBuilder.put(PREFIX + "bootstrap.servers", String.join(",", bootstrapServers));
+        if (bootstrapServers != null) {
+            propertiesBuilder.put(PREFIX + "bootstrap.servers", String.join(",", bootstrapServers));
+        }
         propertiesBuilder.put(PREFIX + "poll.timeout.ms", pollTimeoutMs);
 
         return propertiesBuilder.getProperties();

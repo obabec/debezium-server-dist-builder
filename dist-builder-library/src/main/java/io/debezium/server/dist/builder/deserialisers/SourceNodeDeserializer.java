@@ -13,6 +13,7 @@ import io.debezium.server.dist.builder.modules.source.Mysql;
 import io.debezium.server.dist.builder.modules.source.Oracle;
 import io.debezium.server.dist.builder.modules.source.Postgres;
 import io.debezium.server.dist.builder.modules.source.SqlServer;
+import io.debezium.server.dist.builder.utils.DeserializationUtils;
 
 import java.io.IOException;
 
@@ -31,7 +32,7 @@ public class SourceNodeDeserializer extends StdDeserializer<SourceNode> {
         JsonNode node = jsonParser.readValueAsTree();
         if (node.fields().hasNext()) {
             String key = node.fields().next().getKey();
-            ObjectMapper mapper = DeserializationUtils.getCustomMapper();
+            ObjectMapper mapper = DeserializationUtils.getCustomDeserializationMapper();
 
             switch (key) {
                 case "Postgres":

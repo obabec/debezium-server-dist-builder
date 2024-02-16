@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import io.debezium.server.dist.builder.modules.source.storage.AzureBlobStorageConfig;
 import io.debezium.server.dist.builder.modules.source.storage.FileStorage;
 import io.debezium.server.dist.builder.modules.source.storage.RedisStorageConfig;
 import io.debezium.server.dist.builder.modules.source.storage.StorageConfig;
+import io.debezium.server.dist.builder.utils.DeserializationUtils;
 
 import java.io.IOException;
 
@@ -27,12 +29,16 @@ public class StorageConfigDeserializer extends StdDeserializer<StorageConfig> {
         JsonNode node = jsonParser.readValueAsTree();
         if (node.fields().hasNext()) {
             String key = node.fields().next().getKey();
-            ObjectMapper mapper = DeserializationUtils.getCustomMapper();
+            ObjectMapper mapper = DeserializationUtils.getCustomDeserializationMapper();
 
-            if (key.equals("FileStorage")) {
-                return mapper.readValue(node.fields().next().getValue().toString(), FileStorage.class);
+            switch (key) {
+                case "AzureBlobStorageConfig":
+                    return mapper.readValue(node.fields().next().getValue().toString(), AzureBlobStorageConfig.class);
+                case "FileStorage":
+                    return mapper.readValue(node.fields().next().getValue().toString(), FileStorage.class);
+                default:
+                    return mapper.readValue(node.fields().next().getValue().toString(), RedisStorageConfig.class);
             }
-            return mapper.readValue(node.fields().next().getValue().toString(), RedisStorageConfig.class);
         } else {
             throw new IOException("No Storage config specified");
         }

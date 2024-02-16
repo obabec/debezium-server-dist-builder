@@ -1,8 +1,7 @@
-package io.debezium.server.dist.builder.modules.sink;
+package io.debezium.server.dist.builder.modules.source.storage;
 
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
-import io.debezium.server.dist.builder.modules.SinkNode;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
@@ -10,19 +9,26 @@ import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-@Buildable
 @Getter
 @Setter
-public class Kafka implements SinkNode {
-    private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "kafka";
+@Buildable
+public class S3StorageConfig implements SchemaHistoryStorage {
+    private final String ARTIFACT_ID = "debezium-storage-s3";
 
-    private final String type = "kafka";
+    private String accessKeyId;
+    private String secretAccessKey;
 
-    private HashMap<String, Object> kafkaProducer;
+    private String regionName;
+
+    private String bucketName;
+
+    private String objectName;
+
+    private String endpoint;
+
 
     @Override
     public Node buildNode(Document document, List<Dependency> dependencyList) {
@@ -30,20 +36,14 @@ public class Kafka implements SinkNode {
     }
 
     @Override
-    public String toString() {
-        return ARTIFACT_ID;
-    }
-
-    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
-        if (kafkaProducer != null && !kafkaProducer.isEmpty()) {
-            propertiesBuilder.putAllWithPrefix("debezium.sink.kafka.producer.", kafkaProducer);
-        }
-
-
+        propertiesBuilder.put("s3.access.key.id", accessKeyId);
+        propertiesBuilder.put("s3.secret.access.key", secretAccessKey);
+        propertiesBuilder.put("s3.region.name", regionName);
+        propertiesBuilder.put("s3.bucket.name", bucketName);
+        propertiesBuilder.put("s3.object.name", objectName);
+        propertiesBuilder.put("s3.endpoint", endpoint);
         return propertiesBuilder.getProperties();
     }
 }

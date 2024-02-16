@@ -1,7 +1,9 @@
 package io.debezium.server.dist.builder;
 
+import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.utils.ZipUtils;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
 import org.apache.maven.shared.invoker.InvocationRequest;
@@ -30,7 +32,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -42,6 +48,8 @@ public class DebeziumServerDistributionBuilder {
     private static final String SERVER_FOLDER = "debezium-server-dist";
     private static final Logger LOGGER = LoggerFactory.getLogger(DebeziumServerDistributionBuilder.class);
     private static final String POM_TEMPLATE = "template.xslt";
+
+    private List<Dependency> dependencyList;
     private DebeziumServer debeziumServer;
     private String git_repo = null;
     private String pathToProject = null;
@@ -108,7 +116,24 @@ public class DebeziumServerDistributionBuilder {
             StreamResult result = new StreamResult(output);
 
             transformer.transform(source, result);
+
+            copyDockerFile();
         } catch (IOException | TransformerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void copyDockerFile() throws IOException {
+        InputStream is = getClass().getClassLoader().getResourceAsStream("Dockerfile");
+        File f = new File(String.format("%s/Dockerfile", pathToProject));
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        try (FileOutputStream fs = new FileOutputStream(f)) {
+            if (is != null) {
+                fs.write(is.readAllBytes());
+            }
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -131,6 +156,7 @@ public class DebeziumServerDistributionBuilder {
     }
 
     public DebeziumServerDistributionBuilder build() {
+        this.dependencyList = new ArrayList<>();
         if (git_repo != null) {
             LOGGER.trace("Cloning the remote repository");
             cloneDistFolder();
@@ -140,11 +166,23 @@ public class DebeziumServerDistributionBuilder {
         preparePomDocument();
         LOGGER.trace("Started build of pom file");
         removeCurrentPom();
-        dependenciesNode.appendChild(debeziumServer.getSinkNode().buildNode(pom));
-        dependenciesNode.appendChild(debeziumServer.getSourceNode().buildNode(pom));
+        addDependency(debeziumServer.getSinkNode().buildNode(pom, dependencyList));
+        addDependency(debeziumServer.getSourceNode().buildNode(pom, dependencyList));
+        addDependency(debeziumServer.getInternalSchemaHistory().buildNode(pom, dependencyList));
+        addDependency(debeziumServer.getOffsetStorage().buildNode(pom, dependencyList));
+
+        for (Dependency dependency : debeziumServer.getDependencyList()) {
+            addDependency(dependency.buildNode(pom, dependencyList));
+        }
         LOGGER.trace("Finished building pom file");
         write(pathToTargetPom);
         return this;
+    }
+
+    private void addDependency(Node dep) {
+        if (dep != null) {
+            dependenciesNode.appendChild(dep);
+        }
     }
 
     public void mavenBuild(String mavenHome) {
@@ -179,6 +217,10 @@ public class DebeziumServerDistributionBuilder {
             throw new RuntimeException(e);
         }
         return this;
+    }
+
+    public void zipDistribution(String pathToZip, OutputStream os) throws IOException {
+        ZipUtils.zipFolder(Paths.get(pathToZip), os);
     }
 
     public DebeziumServerDistributionBuilder generateOperatorCR() {
