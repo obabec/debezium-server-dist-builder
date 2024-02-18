@@ -1,17 +1,22 @@
 package io.debezium.server.dist.builder.modules.config.sources.logmine;
 
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlConfig;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
 
 @Getter
 @Setter
-public class LogMiningConfig implements PropertiesConfig {
+public class LogMiningConfig implements PropertiesConfig, YamlConfig {
 
     private Strategy strategy;
     private QueryFilterMode queryFilterMode;
@@ -64,37 +69,49 @@ public class LogMiningConfig implements PropertiesConfig {
     private String flushTableName;
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        final String PREFIX = "debezium.source.log.mining.";
+        builder.putEnumWithLowerCase(PREFIX + "strategy", strategy);
+        builder.putEnumWithLowerCase(PREFIX + "query.filter.mode", queryFilterMode);
+        builder.putEnumWithLowerCase(PREFIX + "buffer.type", bufferType);
+        builder.put(PREFIX + "buffer.transaction.events.threshold", bufferTransactionEventsThreshold);
+        builder.put(PREFIX + "buffer.infinispan.cache.transactions", bufferInfinispanCacheTransactions);
+        builder.put(PREFIX + "buffer.infinispan.cache.events", bufferInfinispanCacheEvents);
+        builder.put(PREFIX + "buffer.infinispan.cache.processed_transactions", bufferInfinispanCacheProcessedTransactions);
+        builder.put(PREFIX + "buffer.infinispan.cache.schema_changes", bufferInfinispanCacheSchemaChanges);
+        builder.putBoolean(PREFIX + "buffer.drop.on.stop", bufferDropOnStop);
+        builder.put(PREFIX + "session.max.ms", sessionMaxMs);
+        builder.put(PREFIX + "restart.connection", restartConnection);
+        builder.put(PREFIX + "batch.size.min", batchSizeMin);
+        builder.put(PREFIX + "batch.size.max", batchSizeMax);
+        builder.put(PREFIX + "batch.size.default", batchSizeDefault);
+        builder.put(PREFIX + "sleep.time.min.ms", sleepTimeMinMs);
+        builder.put(PREFIX + "sleep.time.max.ms", sleepTimeMaxMs);
+        builder.put(PREFIX + "sleep.time.default.ms", sleepTimeDefaultMs);
+        builder.put(PREFIX + "sleep.time.increment.ms", sleepTimeIncrementMs);
+        builder.put(PREFIX + "archive.log.hours", archiveLogHours);
+        builder.put(PREFIX + "archive.log.only.mode", archiveLogOnlyMode);
+        builder.put(PREFIX + "archive.log.only.scn.poll.interval.ms", archiveLogOnlyScnPollIntervalMs);
+        builder.put(PREFIX + "transaction.retention.ms", transactionRetentionMs);
+        builder.put(PREFIX + "archive.destination.name", archiveDestinationName);
+        builder.putList(PREFIX + "username.include.list", usernameIncludeList);
+        builder.put(PREFIX + "username.exclude.list", usernameExcludeList);
+        builder.put(PREFIX + "scn.gap.detection.gap.size.min", scnGapDetectionGapSizeMin);
+        builder.put(PREFIX + "scn.gap.detection.time.interval.max.ms", scnGapDetectionTimeIntervalMaxMs);
+        builder.put(PREFIX + "flush.table.name", flushTableName);
+    }
+
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-        final String PREFIX = "debezium.source.log.mining.";
-        propertiesBuilder.putEnumWithLowerCase(PREFIX + "strategy", strategy);
-        propertiesBuilder.putEnumWithLowerCase(PREFIX + "query.filter.mode", queryFilterMode);
-        propertiesBuilder.putEnumWithLowerCase(PREFIX + "buffer.type", bufferType);
-        propertiesBuilder.put(PREFIX + "buffer.transaction.events.threshold", bufferTransactionEventsThreshold);
-        propertiesBuilder.put(PREFIX + "buffer.infinispan.cache.transactions", bufferInfinispanCacheTransactions);
-        propertiesBuilder.put(PREFIX + "buffer.infinispan.cache.events", bufferInfinispanCacheEvents);
-        propertiesBuilder.put(PREFIX + "buffer.infinispan.cache.processed_transactions", bufferInfinispanCacheProcessedTransactions);
-        propertiesBuilder.put(PREFIX + "buffer.infinispan.cache.schema_changes", bufferInfinispanCacheSchemaChanges);
-        propertiesBuilder.putBoolean(PREFIX + "buffer.drop.on.stop", bufferDropOnStop);
-        propertiesBuilder.put(PREFIX + "session.max.ms", sessionMaxMs);
-        propertiesBuilder.put(PREFIX + "restart.connection", restartConnection);
-        propertiesBuilder.put(PREFIX + "batch.size.min", batchSizeMin);
-        propertiesBuilder.put(PREFIX + "batch.size.max", batchSizeMax);
-        propertiesBuilder.put(PREFIX + "batch.size.default", batchSizeDefault);
-        propertiesBuilder.put(PREFIX + "sleep.time.min.ms", sleepTimeMinMs);
-        propertiesBuilder.put(PREFIX + "sleep.time.max.ms", sleepTimeMaxMs);
-        propertiesBuilder.put(PREFIX + "sleep.time.default.ms", sleepTimeDefaultMs);
-        propertiesBuilder.put(PREFIX + "sleep.time.increment.ms", sleepTimeIncrementMs);
-        propertiesBuilder.put(PREFIX + "archive.log.hours", archiveLogHours);
-        propertiesBuilder.put(PREFIX + "archive.log.only.mode", archiveLogOnlyMode);
-        propertiesBuilder.put(PREFIX + "archive.log.only.scn.poll.interval.ms", archiveLogOnlyScnPollIntervalMs);
-        propertiesBuilder.put(PREFIX + "transaction.retention.ms", transactionRetentionMs);
-        propertiesBuilder.put(PREFIX + "archive.destination.name", archiveDestinationName);
-        propertiesBuilder.putList(PREFIX + "username.include.list", usernameIncludeList);
-        propertiesBuilder.put(PREFIX + "username.exclude.list", usernameExcludeList);
-        propertiesBuilder.put(PREFIX + "scn.gap.detection.gap.size.min", scnGapDetectionGapSizeMin);
-        propertiesBuilder.put(PREFIX + "scn.gap.detection.time.interval.max.ms", scnGapDetectionTimeIntervalMaxMs);
-        propertiesBuilder.put(PREFIX + "flush.table.name", flushTableName);
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
     }
 }

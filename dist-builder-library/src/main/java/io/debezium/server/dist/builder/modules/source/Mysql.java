@@ -3,7 +3,10 @@ package io.debezium.server.dist.builder.modules.source;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SourceNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.debezium.server.dist.builder.modules.config.sources.SqlBasedConnectorConfig;
 import io.debezium.server.dist.builder.modules.config.sources.types.BigintHandlingMode;
 import io.debezium.server.dist.builder.modules.config.sources.types.DatabaseSslMode;
@@ -17,6 +20,7 @@ import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -90,32 +94,48 @@ public class Mysql extends SqlBasedConnectorConfig implements SourceNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(debeziumServerSourcePrefix + "database.server.id", databaseServerId);
+        builder.put(debeziumServerSourcePrefix + "bigint.unsigned.handling.mode", bigintUnsignedHandlingMode);
+        builder.putBoolean(debeziumServerSourcePrefix + "include.schema.comments", includeSchemaComments);
+        builder.putBoolean(debeziumServerSourcePrefix + "include.query", includeQuery);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "event.deserialization.failure.handling.mode", eventDeserializationFailureHandlingMode);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "inconsistent.schema.handling.mode", inconsistentSchemaHandlingMode);
+        builder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
+        builder.put(debeziumServerSourcePrefix + "connect.timeout.ms", connectTimeoutMs);
+        builder.putList(debeziumServerSourcePrefix + "gtid.source.includes", gtidSourceIncludes);
+        builder.putList(debeziumServerSourcePrefix + "gtid.source.excludes", gtidSourceExcludes);
+        builder.putBoolean(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode);
+        builder.putBoolean(debeziumServerSourcePrefix + "connect.keep.alive", connectKeepAlive);
+        builder.putBoolean(debeziumServerSourcePrefix + "table.ignore.builtin", tableIgnoreBuiltin);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "database.ssl.mode", databaseSslMode);
+        builder.put(debeziumServerSourcePrefix + "binlog.buffer.size", binlogBufferSize);
+        builder.put(debeziumServerSourcePrefix + "min.row.count.to.stream.results", minRowCountToStreamResults);
+        builder.put(debeziumServerSourcePrefix + "heartbeat.action.query", heartbeatActionQuery);
+        builder.putList(debeziumServerSourcePrefix + "database.initial.statements", databaseInitialStatements);
+        builder.putBoolean(debeziumServerSourcePrefix + "enable.time.adjuster", enableTimeAdjuster);
+        builder.putBoolean(debeziumServerSourcePrefix + "incremental.snapshot.allow.schema.changes", incrementalSnapshotAllowSchemaChanges);
+        builder.putBoolean(debeziumServerSourcePrefix + "read.only", readOnly);
+        builder.putBoolean(debeziumServerSourcePrefix + "snapshot.tables.order.by.row.count", snapshotTablesOrderByRowCount);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        
+        YamlBuilder config = new YamlBuilder(super.toYaml());
+        getCommonConfig(config);
+        config.putAll(schemaHistoryInternalConfig);
+        yamlBuilder.put("config", config.getYaml());
+        return yamlBuilder.getYaml();
+    }
+
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "database.server.id", databaseServerId);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "bigint.unsigned.handling.mode", bigintUnsignedHandlingMode);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "include.schema.comments", includeSchemaComments);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "include.query", includeQuery);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "event.deserialization.failure.handling.mode", eventDeserializationFailureHandlingMode);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "inconsistent.schema.handling.mode", inconsistentSchemaHandlingMode);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "connect.timeout.ms", connectTimeoutMs);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "gtid.source.includes", gtidSourceIncludes);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "gtid.source.excludes", gtidSourceExcludes);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "connect.keep.alive", connectKeepAlive);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "table.ignore.builtin", tableIgnoreBuiltin);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "database.ssl.mode", databaseSslMode);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "binlog.buffer.size", binlogBufferSize);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "min.row.count.to.stream.results", minRowCountToStreamResults);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "heartbeat.action.query", heartbeatActionQuery);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "database.initial.statements", databaseInitialStatements);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "enable.time.adjuster", enableTimeAdjuster);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "incremental.snapshot.allow.schema.changes", incrementalSnapshotAllowSchemaChanges);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "read.only", readOnly);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "snapshot.tables.order.by.row.count", snapshotTablesOrderByRowCount);
+        getCommonConfig(propertiesBuilder);
         propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }

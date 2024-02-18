@@ -3,7 +3,10 @@ package io.debezium.server.dist.builder.modules.source;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SourceNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.debezium.server.dist.builder.modules.config.sources.SqlBasedConnectorConfig;
 import io.debezium.server.dist.builder.modules.config.sources.logmine.LogMiningConfig;
 import io.debezium.server.dist.builder.modules.config.sources.types.BinaryHandlingMode;
@@ -17,6 +20,7 @@ import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -64,30 +68,45 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(debeziumServerSourcePrefix + "database.dbname", databaseDbname);
+        builder.put(debeziumServerSourcePrefix + "database.url", databaseUrl);
+        builder.put(debeziumServerSourcePrefix + "database.pdb.name", databasePbdName);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "database.connection.adapter", databaseConnectionAdapter);
+        builder.putList(debeziumServerSourcePrefix + "snapshot.select.statement.overrides", snapshotSelectStatementOverrides);
+        builder.putList(debeziumServerSourcePrefix + "schema.include.list", schemaIncludeList);
+        builder.putBoolean(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange);
+        builder.putBoolean(debeziumServerSourcePrefix + "include.schema.comments", includeSchemaComments);
+        builder.putList(debeziumServerSourcePrefix + "schema.exclude.list", schemaExcludeList);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "binary.handling.mode", binaryHandlingMode);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "interval.handling.mode", intervalHandlingMode);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "event.processing.failure.handling.mode", eventProcessingFailureHandlingMode);
+        builder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
+        builder.put(debeziumServerSourcePrefix + "heartbeat.interval.ms", heartbeatIntervalMs);
+        builder.put(debeziumServerSourcePrefix + "heartbeat.action.query", heartbeatActionQuery);
+        builder.put(debeziumServerSourcePrefix + "query.fetch.size", queryFetchSize);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode);
+
+        builder.putBoolean(debeziumServerSourcePrefix + "lob.enabled", lobEnabled);
+        builder.put(debeziumServerSourcePrefix + "unavailable.value.placeholder", unavailableValuePlaceholder);
+        builder.putList(debeziumServerSourcePrefix + "rac.nodes", racNodes);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        yamlBuilder.putAll(schemaHistoryInternalConfig);
+        yamlBuilder.putAll(logMiningConfig);
+        return yamlBuilder.getYaml();
+    }
+
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
+        getCommonConfig(propertiesBuilder);
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "database.dbname", databaseDbname);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "database.url", databaseUrl);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "database.pdb.name", databasePbdName);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "database.connection.adapter", databaseConnectionAdapter);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "snapshot.select.statement.overrides", snapshotSelectStatementOverrides);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "schema.include.list", schemaIncludeList);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "skip.messages.without.change", skipMessagesWithoutChange);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "include.schema.comments", includeSchemaComments);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "schema.exclude.list", schemaExcludeList);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "binary.handling.mode", binaryHandlingMode);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "interval.handling.mode", intervalHandlingMode);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "event.processing.failure.handling.mode", eventProcessingFailureHandlingMode);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "heartbeat.interval.ms", heartbeatIntervalMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "heartbeat.action.query", heartbeatActionQuery);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "query.fetch.size", queryFetchSize);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.locking.mode", snapshotLockingMode);
         propertiesBuilder.putAll(logMiningConfig);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "lob.enabled", lobEnabled);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "unavailable.value.placeholder", unavailableValuePlaceholder);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "rac.nodes", racNodes);
         propertiesBuilder.putAll(schemaHistoryInternalConfig);
 
         return propertiesBuilder.getProperties();

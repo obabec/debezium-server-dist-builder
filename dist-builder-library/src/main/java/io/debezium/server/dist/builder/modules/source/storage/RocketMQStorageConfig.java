@@ -2,13 +2,17 @@ package io.debezium.server.dist.builder.modules.source.storage;
 
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -30,19 +34,29 @@ public class RocketMQStorageConfig implements SchemaHistoryStorage {
     private Integer recoveryPollIntervalMs;
     private Integer storeRecordTimeoutMs;
 
+    @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put("rocketmq.topic", topic);
+        builder.put("rocketmq.name.srv.addr", nameSrvAddr);
+        builder.putBoolean("rocketmq.acl.enabled", aclEnabled);
+        builder.put("rocketmq.access.key", accessKey);
+        builder.put("rocketmq.secret.key", secretKey);
+        builder.put("rocketmq.recovery.attempts", recoveryAttempts);
+        builder.put("rocketmq.recovery.poll.interval.ms", recoveryPollIntervalMs);
+        builder.put("rocketmq.store.record.timeout.ms", storeRecordTimeoutMs);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
 
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-        propertiesBuilder.put("rocketmq.topic", topic);
-        propertiesBuilder.put("rocketmq.name.srv.addr", nameSrvAddr);
-        propertiesBuilder.putBoolean("rocketmq.acl.enabled", aclEnabled);
-        propertiesBuilder.put("rocketmq.access.key", accessKey);
-        propertiesBuilder.put("rocketmq.secret.key", secretKey);
-        propertiesBuilder.put("rocketmq.recovery.attempts", recoveryAttempts);
-        propertiesBuilder.put("rocketmq.recovery.poll.interval.ms", recoveryPollIntervalMs);
-        propertiesBuilder.put("rocketmq.store.record.timeout.ms", storeRecordTimeoutMs);
-
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
 

@@ -2,13 +2,17 @@ package io.debezium.server.dist.builder.modules.source.storage;
 
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -30,19 +34,30 @@ public class RedisStorageConfig implements StorageConfig, SchemaHistoryStorage {
     private Boolean waitRetryEnabled;
     private Integer waitRetryDelayMs;
 
+    @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put("redis.address", address);
+        builder.put("redis.user", user);
+        builder.put("redis.password", password);
+        builder.putBoolean("redis.ssl.enabled", sslEnabled);
+        builder.put("redis.key", key);
+        builder.putBoolean("redis.wait.enabled", waitEnabled);
+        builder.put("redis.wait.timeout.ms", waitTimeoutMs);
+        builder.putBoolean("redis.wait.retry.enabled", waitRetryEnabled);
+        builder.put("redis.wait.retry.delay.ms", waitRetryDelayMs);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
 
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-        propertiesBuilder.put("redis.address", address);
-        propertiesBuilder.put("redis.user", user);
-        propertiesBuilder.put("redis.password", password);
-        propertiesBuilder.putBoolean("redis.ssl.enabled", sslEnabled);
-        propertiesBuilder.put("redis.key", key);
-        propertiesBuilder.putBoolean("redis.wait.enabled", waitEnabled);
-        propertiesBuilder.put("redis.wait.timeout.ms", waitTimeoutMs);
-        propertiesBuilder.putBoolean("redis.wait.retry.enabled", waitRetryEnabled);
-        propertiesBuilder.put("redis.wait.retry.delay.ms", waitRetryDelayMs);
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
 

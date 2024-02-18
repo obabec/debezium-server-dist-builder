@@ -3,7 +3,10 @@ package io.debezium.server.dist.builder.modules.source;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SourceNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.debezium.server.dist.builder.modules.config.sources.ConnectorConfig;
 import io.debezium.server.dist.builder.modules.config.sources.types.CaptureMode;
 import io.debezium.server.dist.builder.modules.config.sources.types.MongodbConnectionMode;
@@ -14,6 +17,7 @@ import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -93,36 +97,48 @@ public class Mongo extends ConnectorConfig implements SourceNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(debeziumServerSourcePrefix + "mongodb.connection.string", mongodbConnectionString);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "mongodb.connection.mode", mongodbConnectionMode);
+        builder.put(debeziumServerSourcePrefix + "mongodb.user", mongodbUser);
+        builder.put(debeziumServerSourcePrefix + "mongodb.password", mongodbPassword);
+        builder.put(debeziumServerSourcePrefix + "mongodb.authsource", mongodbAuthSource);
+        builder.putBoolean(debeziumServerSourcePrefix + "mongodb.ssl.enabled", mongodbSslEnabled);
+        builder.putBoolean(debeziumServerSourcePrefix + "mongodb.ssl.invalid.hostname.allowed", mongodbSslInvalidHostnameAllowed);
+        builder.putList(debeziumServerSourcePrefix + "collection.include.list", collectionIncludeList);
+        builder.putList(debeziumServerSourcePrefix + "collection.exclude.list", collectionIncludeList);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "capture.mode", captureMode);
+        builder.putList(debeziumServerSourcePrefix + "field.exclude.list", fieldExcludeList);
+        builder.putList(debeziumServerSourcePrefix + "field.renames", fieldRenames);
+        builder.putList(debeziumServerSourcePrefix + "mongodb.hosts", mongodbHosts);
+        builder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
+        builder.put(debeziumServerSourcePrefix + "connect.backoff.initial.delay.ms", connectBackoffInitialDelayMs);
+        builder.put(debeziumServerSourcePrefix + "connect.backoff.max.delay.ms", connectBackoffMaxDelayMs);
+        builder.put(debeziumServerSourcePrefix + "connect.max.attempts", connectMaxAttempts);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "source.struct.version", sourceStructVersion);
+        builder.put(debeziumServerSourcePrefix + "snapshot.collection.filter.overrides", snapshotCollectionFilterOverrides);
+        builder.put(debeziumServerSourcePrefix + "retriable.restart.connector.wait.ms", retriableRestartConnectorWaitMs);
+        builder.put(debeziumServerSourcePrefix + "mongodb.poll.interval.ms", mongodbPollIntervalMs);
+        builder.put(debeziumServerSourcePrefix + "mongodb.connect.timeout.ms", mongodbConnectTimeoutMs);
+        builder.put(debeziumServerSourcePrefix + "mongodb.heartbeat.frequency.ms", mongodbHeartbeatFrequencyMs);
+        builder.put(debeziumServerSourcePrefix + "mongodb.socket.timeout.ms", mongodbSocketTimeoutMs);
+        builder.put(debeziumServerSourcePrefix + "mongodb.server.selection.timeout.ms", mongodbServerSelectionTimeoutMs);
+        builder.put(debeziumServerSourcePrefix + "cursor.pipeline", cursorPipeline);
+        builder.put(debeziumServerSourcePrefix + "cursor.max.await.time.ms", cursorMaxAwaitTimeMs);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
+
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "mongodb.connection.string", mongodbConnectionString);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "mongodb.connection.mode", mongodbConnectionMode);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "mongodb.user", mongodbUser);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "mongodb.password", mongodbPassword);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "mongodb.authsource", mongodbAuthSource);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "mongodb.ssl.enabled", mongodbSslEnabled);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "mongodb.ssl.invalid.hostname.allowed", mongodbSslInvalidHostnameAllowed);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "collection.include.list", collectionIncludeList);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "collection.exclude.list", collectionIncludeList);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "capture.mode", captureMode);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "field.exclude.list", fieldExcludeList);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "field.renames", fieldRenames);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "mongodb.hosts", mongodbHosts);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "connect.backoff.initial.delay.ms", connectBackoffInitialDelayMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "connect.backoff.max.delay.ms", connectBackoffMaxDelayMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "connect.max.attempts", connectMaxAttempts);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "source.struct.version", sourceStructVersion);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.collection.filter.overrides", snapshotCollectionFilterOverrides);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "retriable.restart.connector.wait.ms", retriableRestartConnectorWaitMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "mongodb.poll.interval.ms", mongodbPollIntervalMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "mongodb.connect.timeout.ms", mongodbConnectTimeoutMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "mongodb.heartbeat.frequency.ms", mongodbHeartbeatFrequencyMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "mongodb.socket.timeout.ms", mongodbSocketTimeoutMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "mongodb.server.selection.timeout.ms", mongodbServerSelectionTimeoutMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "cursor.pipeline", cursorPipeline);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "cursor.max.await.time.ms", cursorMaxAwaitTimeMs);
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
 }

@@ -3,7 +3,10 @@ package io.debezium.server.dist.builder.modules.source;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SourceNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.debezium.server.dist.builder.modules.config.sources.SqlBasedConnectorConfig;
 import io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig;
 import io.debezium.server.dist.builder.modules.config.sources.types.SnapshotIsolationMode;
@@ -13,6 +16,7 @@ import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,12 +50,24 @@ public class Db2 extends SqlBasedConnectorConfig implements SourceNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.putEnum(debeziumServerSourcePrefix + "snapshot.isolation.mode", snapshotIsolationMode);
+        builder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        yamlBuilder.putAll(schemaHistoryInternalConfig);
+        return yamlBuilder.getYaml();
+    }
+
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
-
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        propertiesBuilder.putEnum(debeziumServerSourcePrefix + "snapshot.isolation.mode", snapshotIsolationMode);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
+        getCommonConfig(propertiesBuilder);
         propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }

@@ -3,7 +3,10 @@ package io.debezium.server.dist.builder.modules.sink;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,15 +38,30 @@ public class Kafka implements SinkNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        if (kafkaProducer != null && !kafkaProducer.isEmpty()) {
+            builder.putAllWithPrefix("debezium.sink.kafka.producer.", kafkaProducer);
+        }
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        yamlBuilder.put("type", type);
+        YamlBuilder config = new YamlBuilder();
+        getCommonConfig(config);
+        yamlBuilder.put("config", config.getYaml());
+        return yamlBuilder.getYaml();
+    }
+
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
 
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
-        if (kafkaProducer != null && !kafkaProducer.isEmpty()) {
-            propertiesBuilder.putAllWithPrefix("debezium.sink.kafka.producer.", kafkaProducer);
-        }
-
-
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
+
+
 }

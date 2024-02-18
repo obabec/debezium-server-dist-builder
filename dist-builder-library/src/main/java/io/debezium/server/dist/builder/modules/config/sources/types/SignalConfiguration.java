@@ -1,17 +1,22 @@
 package io.debezium.server.dist.builder.modules.config.sources.types;
 
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlConfig;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
 
 @Getter
 @Setter
-public class SignalConfiguration implements PropertiesConfig {
+public class SignalConfiguration implements PropertiesConfig, YamlConfig {
 
     protected String topic;
 
@@ -23,15 +28,27 @@ public class SignalConfiguration implements PropertiesConfig {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        String PREFIX = "debezium.source.signal.kafka";
+        builder.put(PREFIX + "topic", topic);
+        if (bootstrapServers != null) {
+            builder.put(PREFIX + "bootstrap.servers", String.join(",", bootstrapServers));
+        }
+        builder.put(PREFIX + "poll.timeout.ms", pollTimeoutMs);
+    }
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-        String PREFIX = "debezium.source.signal.kafka";
-        propertiesBuilder.put(PREFIX + "topic", topic);
-        if (bootstrapServers != null) {
-            propertiesBuilder.put(PREFIX + "bootstrap.servers", String.join(",", bootstrapServers));
-        }
-        propertiesBuilder.put(PREFIX + "poll.timeout.ms", pollTimeoutMs);
-
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
+    }
+
+
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
     }
 }

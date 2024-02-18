@@ -1,20 +1,26 @@
 package io.debezium.server.dist.builder.modules.config.sources;
 
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesConfig;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlConfig;
 import io.debezium.server.dist.builder.modules.config.sources.types.NameAdjustmentMode;
 import io.debezium.server.dist.builder.modules.config.sources.types.SignalConfiguration;
 import io.debezium.server.dist.builder.modules.config.sources.types.SnapshotMode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 
 @Getter
 @Setter
-public class ConnectorConfig implements PropertiesConfig {
+public class ConnectorConfig implements PropertiesConfig, YamlConfig {
     protected final String debeziumServerSourcePrefix = "debezium.source.";
     protected String name;
     protected String topicPrefix;
@@ -53,36 +59,50 @@ public class ConnectorConfig implements PropertiesConfig {
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-        propertiesBuilder.put(debeziumServerSourcePrefix + "name", this.name);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "topic.prefix", this.topicPrefix);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "database.include.list", databaseIncludeList);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "database.exclude.list", databaseExcludeList);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.mode", snapshotMode);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "snapshot.include.collection.list", snapshotIncludeCollectionList);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "tasks.max", tasksMax);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.max.threads", snapshotMaxThreads);
-        propertiesBuilder.putBoolean(debeziumServerSourcePrefix + "tombstones.on.delete", tombstonesOnDelete);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.delay.ms", snapshotDelayMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "snapshot.fetch.size", snapshotFetchSize);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "schema.name.adjustment.mode", schemaNameAdjustmentMode);
-        propertiesBuilder.putEnumWithLowerCase(debeziumServerSourcePrefix + "field.name.adjustment.mode", fieldNameAdjustmentMode);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "max.batch.size", maxBatchSize);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "max.queue.size", maxQueueSize);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "max.queue.size.in.bytes", maxQueueSizeInBytes);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "heartbeat.interval.ms", heartbeatIntervalMs);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "skipped.operations", skippedOperations);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "provide.transaction.metadata", provideTransactionMetadata);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "signal.data.collection", signalDataCollection);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "signal.enabled.channels", signalEnabledChannels);
-        propertiesBuilder.putList(debeziumServerSourcePrefix + "notifications.enabled.channels", notificationsEnabledChannels);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "incremental.snapshot.chunk.size", incrementalSnapshotChunkSize);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "topic.naming.strategy", topicNamingStrategy);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "topic.delimiter", topicDelimiter);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "topic.cache.size", topicCacheSize);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "topic.heartbeat.prefix", topicHeartbeatPrefix);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "topic.transaction", topicTransaction);
+        getCommonConfig(propertiesBuilder);
         propertiesBuilder.putAll(signalConfiguration);
-        propertiesBuilder.put(debeziumServerSourcePrefix + "notifications.sink.topic.name", notificationsSinkTopicName);
         return propertiesBuilder.getProperties();
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        yamlBuilder.putAll(signalConfiguration);
+        return yamlBuilder.getYaml();
+    }
+
+    @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(debeziumServerSourcePrefix + "name", this.name);
+        builder.put(debeziumServerSourcePrefix + "topic.prefix", this.topicPrefix);
+        builder.putList(debeziumServerSourcePrefix + "database.include.list", databaseIncludeList);
+        builder.putList(debeziumServerSourcePrefix + "database.exclude.list", databaseExcludeList);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "snapshot.mode", snapshotMode);
+        builder.putList(debeziumServerSourcePrefix + "snapshot.include.collection.list", snapshotIncludeCollectionList);
+        builder.put(debeziumServerSourcePrefix + "tasks.max", tasksMax);
+        builder.put(debeziumServerSourcePrefix + "snapshot.max.threads", snapshotMaxThreads);
+        builder.putBoolean(debeziumServerSourcePrefix + "tombstones.on.delete", tombstonesOnDelete);
+        builder.put(debeziumServerSourcePrefix + "snapshot.delay.ms", snapshotDelayMs);
+        builder.put(debeziumServerSourcePrefix + "snapshot.fetch.size", snapshotFetchSize);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "schema.name.adjustment.mode", schemaNameAdjustmentMode);
+        builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "field.name.adjustment.mode", fieldNameAdjustmentMode);
+        builder.put(debeziumServerSourcePrefix + "max.batch.size", maxBatchSize);
+        builder.put(debeziumServerSourcePrefix + "max.queue.size", maxQueueSize);
+        builder.put(debeziumServerSourcePrefix + "max.queue.size.in.bytes", maxQueueSizeInBytes);
+        builder.put(debeziumServerSourcePrefix + "heartbeat.interval.ms", heartbeatIntervalMs);
+        builder.put(debeziumServerSourcePrefix + "skipped.operations", skippedOperations);
+        builder.put(debeziumServerSourcePrefix + "provide.transaction.metadata", provideTransactionMetadata);
+        builder.put(debeziumServerSourcePrefix + "signal.data.collection", signalDataCollection);
+        builder.putList(debeziumServerSourcePrefix + "signal.enabled.channels", signalEnabledChannels);
+        builder.putList(debeziumServerSourcePrefix + "notifications.enabled.channels", notificationsEnabledChannels);
+        builder.put(debeziumServerSourcePrefix + "incremental.snapshot.chunk.size", incrementalSnapshotChunkSize);
+        builder.put(debeziumServerSourcePrefix + "topic.naming.strategy", topicNamingStrategy);
+        builder.put(debeziumServerSourcePrefix + "topic.delimiter", topicDelimiter);
+        builder.put(debeziumServerSourcePrefix + "topic.cache.size", topicCacheSize);
+        builder.put(debeziumServerSourcePrefix + "topic.heartbeat.prefix", topicHeartbeatPrefix);
+        builder.put(debeziumServerSourcePrefix + "topic.transaction", topicTransaction);
+        builder.put(debeziumServerSourcePrefix + "notifications.sink.topic.name", notificationsSinkTopicName);
+
     }
 }

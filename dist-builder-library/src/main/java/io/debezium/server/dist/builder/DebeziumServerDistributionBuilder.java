@@ -1,5 +1,7 @@
 package io.debezium.server.dist.builder;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
@@ -50,7 +52,7 @@ public class DebeziumServerDistributionBuilder {
     private static final String POM_TEMPLATE = "template.xslt";
 
     private List<Dependency> dependencyList;
-    private DebeziumServer debeziumServer;
+    private CustomDebeziumServer customDebeziumServer;
     private String git_repo = null;
     private String pathToProject = null;
     private String pathToTargetPom;
@@ -66,8 +68,8 @@ public class DebeziumServerDistributionBuilder {
         return this;
     }
 
-    public DebeziumServerDistributionBuilder withDebeziumServer(DebeziumServer server) {
-        this.debeziumServer = server;
+    public DebeziumServerDistributionBuilder withDebeziumServer(CustomDebeziumServer server) {
+        this.customDebeziumServer = server;
         return this;
     }
 
@@ -166,12 +168,12 @@ public class DebeziumServerDistributionBuilder {
         preparePomDocument();
         LOGGER.trace("Started build of pom file");
         removeCurrentPom();
-        addDependency(debeziumServer.getSinkNode().buildNode(pom, dependencyList));
-        addDependency(debeziumServer.getSourceNode().buildNode(pom, dependencyList));
-        addDependency(debeziumServer.getInternalSchemaHistory().buildNode(pom, dependencyList));
-        addDependency(debeziumServer.getOffsetStorage().buildNode(pom, dependencyList));
+        addDependency(customDebeziumServer.getSinkNode().buildNode(pom, dependencyList));
+        addDependency(customDebeziumServer.getSourceNode().buildNode(pom, dependencyList));
+        addDependency(customDebeziumServer.getInternalSchemaHistory().buildNode(pom, dependencyList));
+        addDependency(customDebeziumServer.getOffsetStorage().buildNode(pom, dependencyList));
 
-        for (Dependency dependency : debeziumServer.getDependencyList()) {
+        for (Dependency dependency : customDebeziumServer.getDependencyList()) {
             addDependency(dependency.buildNode(pom, dependencyList));
         }
         LOGGER.trace("Finished building pom file");
@@ -205,10 +207,10 @@ public class DebeziumServerDistributionBuilder {
 
     public DebeziumServerDistributionBuilder generateConfigurationProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-        propertiesBuilder.putAll(debeziumServer);
+        propertiesBuilder.putAll(customDebeziumServer);
         String pathToPropertiesFile = String.format("%s/src/main/resources/distro/conf/application.properties", pathToProject);
         try {
-            String properties = ConfigurationSerializer.configToPropertiesFile(debeziumServer);
+            String properties = ConfigurationSerializer.configToPropertiesFile(customDebeziumServer);
             FileOutputStream outputStream = new FileOutputStream(pathToPropertiesFile);
             outputStream.write(properties.getBytes());
             outputStream.close();
@@ -224,6 +226,21 @@ public class DebeziumServerDistributionBuilder {
     }
 
     public DebeziumServerDistributionBuilder generateOperatorCR() {
+        this.customDebeziumServer.toYaml();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            byte[] cr = objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsBytes(this.customDebeziumServer.getOperatorCR());
+            File f = new File(String.format("%s/010_custom-debezium-server.yaml", this.pathToProject));
+            try (FileOutputStream fs = new FileOutputStream(f)) {
+                fs.write(cr);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         return this;
     }
 }

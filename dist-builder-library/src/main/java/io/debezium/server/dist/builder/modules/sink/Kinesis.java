@@ -3,7 +3,10 @@ package io.debezium.server.dist.builder.modules.sink;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.debezium.server.dist.builder.modules.config.sinks.SinkConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
@@ -11,6 +14,7 @@ import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -49,17 +53,28 @@ public class Kinesis extends SinkConfig implements SinkNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.region", kinesisRegion);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.endpoint", kinesisEndpoint);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.credentials.profile", kinesisCredentialsProfile);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.null.key", kinesisNullKey);
+
+        builder.put("software.amazon.awssdk.services.kinesis.KinesisClient", softwareAmazonAwssdkServicesKinesisKinesisClient);
+        builder.put("io.debezium.server.StreamNameMapper", ioDebeziumServerStreamNameMapper);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
 
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.region", kinesisRegion);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.endpoint", kinesisEndpoint);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.credentials.profile", kinesisCredentialsProfile);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.null.key", kinesisNullKey);
-
-        propertiesBuilder.put("software.amazon.awssdk.services.kinesis.KinesisClient", softwareAmazonAwssdkServicesKinesisKinesisClient);
-        propertiesBuilder.put("io.debezium.server.StreamNameMapper", ioDebeziumServerStreamNameMapper);
+        getCommonConfig(propertiesBuilder);
 
         return propertiesBuilder.getProperties();
     }

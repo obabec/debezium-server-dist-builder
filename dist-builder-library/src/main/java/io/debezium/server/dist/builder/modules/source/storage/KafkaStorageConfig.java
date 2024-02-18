@@ -2,13 +2,17 @@ package io.debezium.server.dist.builder.modules.source.storage;
 
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -32,14 +36,26 @@ public class KafkaStorageConfig implements SchemaHistoryStorage {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put("kafka.topic", topic);
+        builder.put("kafka.bootstrap.servers", bootstrapServers);
+        builder.put("kafka.recovery.poll.interval.ms", recoveryPollIntervalMs);
+        builder.put("kafka.recovery.attempts", recoveryAttempts);
+        builder.put("kafka.query.timeouts.ms", queryTimeoutsMs);
+        builder.put("kafka.create.timeout.ms", createTimeoutMs);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
+
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-        propertiesBuilder.put("kafka.topic", topic);
-        propertiesBuilder.put("kafka.bootstrap.servers", bootstrapServers);
-        propertiesBuilder.put("kafka.recovery.poll.interval.ms", recoveryPollIntervalMs);
-        propertiesBuilder.put("kafka.recovery.attempts", recoveryAttempts);
-        propertiesBuilder.put("kafka.query.timeouts.ms", queryTimeoutsMs);
-        propertiesBuilder.put("kafka.create.timeout.ms", createTimeoutMs);
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
 }

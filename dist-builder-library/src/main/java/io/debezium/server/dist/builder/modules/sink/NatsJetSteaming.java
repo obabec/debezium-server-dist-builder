@@ -3,13 +3,17 @@ package io.debezium.server.dist.builder.modules.sink;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -45,18 +49,30 @@ public class NatsJetSteaming implements SinkNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.url", natsJetstreamUrl);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.create-stream", natsJetstreamCreateStream);
+        builder.putList(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.subjects", natsJetstreamSubjects);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.storage", natsJetstreamStorage);
+
+        builder.put("io.nats.client.JetStream", ioNatsClientJetStream);
+        builder.put("io.debezium.server.StreamNameMapper", ioDebeziumServerStreamNameMapper);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
 
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.url", natsJetstreamUrl);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.create-stream", natsJetstreamCreateStream);
-        propertiesBuilder.putList(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.subjects", natsJetstreamSubjects);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "nats-jetstream.storage", natsJetstreamStorage);
-
-        propertiesBuilder.put("io.nats.client.JetStream", ioNatsClientJetStream);
-        propertiesBuilder.put("io.debezium.server.StreamNameMapper", ioDebeziumServerStreamNameMapper);
-
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
+
+
 }

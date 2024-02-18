@@ -2,6 +2,6 @@ package io.debezium.server.dist.builder.modules.config;
 
 import java.util.Properties;
 
-public interface PropertiesConfig {
+public interface PropertiesConfig extends Config {
     Properties toProperties();
 }

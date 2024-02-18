@@ -3,7 +3,10 @@ package io.debezium.server.dist.builder.modules.sink;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,19 +50,28 @@ public class Pulsar implements SinkNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.timeout", pulsarTimeout);
+        builder.putAllWithPrefix("debezium.sink.pulsar.client.", pulsarClient);
+        builder.putAllWithPrefix("debezium.sink.pulsar.producer.", pulsarProducer);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.null.key", pulsarNullKey);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.tenant", pulsarTenant);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.namespace", pulsarNamespace);
+
+        builder.put("io.debezium.server.StreamNameMapper", ioDebeziumServerStreamNameMapper);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.timeout", pulsarTimeout);
-        propertiesBuilder.putAllWithPrefix("debezium.sink.pulsar.client.", pulsarClient);
-        propertiesBuilder.putAllWithPrefix("debezium.sink.pulsar.producer.", pulsarProducer);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.null.key", pulsarNullKey);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.tenant", pulsarTenant);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.namespace", pulsarNamespace);
-
-        propertiesBuilder.put("io.debezium.server.StreamNameMapper", ioDebeziumServerStreamNameMapper);
-
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
 }

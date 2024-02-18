@@ -3,13 +3,17 @@ package io.debezium.server.dist.builder.modules.sink;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -75,32 +79,41 @@ public class PubSub implements SinkNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.project.id", pubsubProjectId);
+        builder.putBoolean(SINK_NODE_CONFIG_PREFIX + "pubsub.ordering.enabled", pubsubOrderingEnabled);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.null.key", pubsubNullKey);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.batch.delay.threshold.ms", pubsubBatchDelayThresholdMs);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.batch.element.count.threshold", pubsubBatchElementCountThreshold + "L");
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.batch.request.byte.threshold", pubsubBatchRequestByteThreshold + "L");
+        builder.putBoolean(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.enabled", pubsubFlowControlEnabled);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.max.outstanding.messages", pubsubFlowControlMaxOutstandingMessages);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.max.outstanding.bytes", pubsubFlowControlMaxOutstandingBytes);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.total.timeout.ms", pubsubRetryTotalTimeoutMs);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.initial.delay.ms", pubsubRetryInitialDelayMs);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.delay.multiplier", pubsubRetryDelayMultiplier);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.max.delay.ms", pubsubRetryMaxDelayMs);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.initial.rpc.timeout.ms", pubsubRetryInitialRpcTimeoutMs);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.rpc.timeout.multiplier", pubsubRetryRpcTimeoutMultiplier);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.max.rpc.timeout.ms", pubsubRetryMaxRpcTimeoutMs);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.wait.message.delivery.timeout.ms", pubsubWaitMessageDeliveryTimeoutMs);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.address", pubsubAddress);
+
+        builder.put("io.debezium.server.StreamNameMapper", ioDebeziumServerStreamNameMapper);
+        builder.put("io.debezium.server.pubsub.PubSubChangeConsumer.PublisherBuilder", ioDebeziumServerPubsubPubSubChangeConsumerPublishBuilder);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.project.id", pubsubProjectId);
-        propertiesBuilder.putBoolean(SINK_NODE_CONFIG_PREFIX + "pubsub.ordering.enabled", pubsubOrderingEnabled);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.null.key", pubsubNullKey);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.batch.delay.threshold.ms", pubsubBatchDelayThresholdMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.batch.element.count.threshold", pubsubBatchElementCountThreshold + "L");
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.batch.request.byte.threshold", pubsubBatchRequestByteThreshold + "L");
-        propertiesBuilder.putBoolean(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.enabled", pubsubFlowControlEnabled);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.max.outstanding.messages", pubsubFlowControlMaxOutstandingMessages);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.flowControl.max.outstanding.bytes", pubsubFlowControlMaxOutstandingBytes);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.total.timeout.ms", pubsubRetryTotalTimeoutMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.initial.delay.ms", pubsubRetryInitialDelayMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.delay.multiplier", pubsubRetryDelayMultiplier);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.max.delay.ms", pubsubRetryMaxDelayMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.initial.rpc.timeout.ms", pubsubRetryInitialRpcTimeoutMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.rpc.timeout.multiplier", pubsubRetryRpcTimeoutMultiplier);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.retry.max.rpc.timeout.ms", pubsubRetryMaxRpcTimeoutMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.wait.message.delivery.timeout.ms", pubsubWaitMessageDeliveryTimeoutMs);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "pubsub.address", pubsubAddress);
-
-        propertiesBuilder.put("io.debezium.server.StreamNameMapper", ioDebeziumServerStreamNameMapper);
-        propertiesBuilder.put("io.debezium.server.pubsub.PubSubChangeConsumer.PublisherBuilder", ioDebeziumServerPubsubPubSubChangeConsumerPublishBuilder);
-
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
 }

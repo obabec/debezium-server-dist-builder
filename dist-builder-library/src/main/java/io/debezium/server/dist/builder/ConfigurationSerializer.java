@@ -4,9 +4,9 @@ package io.debezium.server.dist.builder;
 import java.util.Properties;
 
 public class ConfigurationSerializer {
-    static public String configToPropertiesFile(DebeziumServer debeziumServer) {
+    static public String configToPropertiesFile(CustomDebeziumServer customDebeziumServer) {
         StringBuilder stringBuilder = new StringBuilder();
-        Properties properties = debeziumServer.toProperties();
+        Properties properties = customDebeziumServer.toProperties();
 
         for (Object key : properties.keySet()) {
             String k = key.toString();

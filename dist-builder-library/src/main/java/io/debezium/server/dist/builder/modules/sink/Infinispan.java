@@ -3,13 +3,17 @@ package io.debezium.server.dist.builder.modules.sink;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -45,18 +49,31 @@ public class Infinispan implements SinkNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.server.host", infinispanServerHost);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.server.port", infinispanServerPort);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.cache", infinispanCache);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.user", infinispanUser);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.password", infinispanPassword);
+        builder.put("org.infinispan.client.hotrod.RemoteCache", orgInfinispanClientHotrodRemoteCache);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
+
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
 
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.server.host", infinispanServerHost);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.server.port", infinispanServerPort);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.cache", infinispanCache);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.user", infinispanUser);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.password", infinispanPassword);
-        propertiesBuilder.put("org.infinispan.client.hotrod.RemoteCache", orgInfinispanClientHotrodRemoteCache);
-
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
+
+
 }
 

@@ -2,10 +2,14 @@ package io.debezium.server.dist.builder.modules.source.storage;
 
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -16,6 +20,19 @@ public class AzureBlobStorageConfig implements StorageConfig, SchemaHistoryStora
     private String storageAccountContainerName;
     private String storageBlobName;
 
+    @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put("azure.storage.account.connectionstring", storageAccountConnectionString);
+        builder.put("azure.storage.account.container.name", storageAccountContainerName);
+        builder.put("azure.storage.blob.name", storageBlobName);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
 
     @Override
     public Node buildNode(Document document, List<Dependency> dependencyList) {
@@ -25,9 +42,9 @@ public class AzureBlobStorageConfig implements StorageConfig, SchemaHistoryStora
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-        propertiesBuilder.put("azure.storage.account.connectionstring", storageAccountConnectionString);
-        propertiesBuilder.put("azure.storage.account.container.name", storageAccountContainerName);
-        propertiesBuilder.put("azure.storage.blob.name", storageBlobName);
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
+
+
 }

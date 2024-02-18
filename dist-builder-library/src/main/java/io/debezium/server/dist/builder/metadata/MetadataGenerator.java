@@ -2,7 +2,7 @@ package io.debezium.server.dist.builder.metadata;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.debezium.server.dist.builder.DebeziumServer;
+import io.debezium.server.dist.builder.CustomDebeziumServer;
 import org.reflections.Reflections;
 
 import java.io.FileOutputStream;
@@ -17,7 +17,7 @@ public class MetadataGenerator {
 
     public void generateMetadata(FileOutputStream fileOutputStream) throws ClassNotFoundException, IOException {
         MetadataModelObject metadataModelObject = new MetadataModelObject();
-        printFields(DebeziumServer.class, metadataModelObject, null);
+        printFields(CustomDebeziumServer.class, metadataModelObject, null);
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.writerWithDefaultPrettyPrinter().writeValue(fileOutputStream, metadataModelObject);
@@ -110,6 +110,9 @@ public class MetadataGenerator {
 
         for (Field f : currentFields) {
             if (Modifier.isFinal(f.getModifiers())) continue;
+            if (f.getAnnotatedType().toString().contains("io.debezium.operator.api.model.DebeziumServer")) {
+                continue;
+            }
             MetadataModelObject field = new MetadataModelObject();
             field.setName(f.getName());
             String type = f.getAnnotatedType().toString();

@@ -3,13 +3,17 @@ package io.debezium.server.dist.builder.modules.sink;
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
+import io.debezium.server.dist.builder.modules.config.Config;
+import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
+import io.debezium.server.dist.builder.modules.config.YamlBuilder;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,17 +50,30 @@ public class EventHubs implements SinkNode {
     }
 
     @Override
+    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+        builder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.connectionstring", eventhubsConnectionstring);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.hubname", eventhubsHubname);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.partitionid", eventhubsPartitionid);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.partitionkey", eventhubsPartitionkey);
+        builder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.maxbatchsize", eventhubsMaxbatchsize);
+        builder.put("com.azure.messaging.eventhubs.EventHubProducerClient", comAzureMessagingEventhubsEventHubProducerClient);
+    }
+
+    @Override
+    public HashMap<String, Object> toYaml() {
+        YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
+        return yamlBuilder.getYaml();
+    }
+
+    @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
 
         propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "type", type);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.connectionstring", eventhubsConnectionstring);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.hubname", eventhubsHubname);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.partitionid", eventhubsPartitionid);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.partitionkey", eventhubsPartitionkey);
-        propertiesBuilder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.maxbatchsize", eventhubsMaxbatchsize);
-        propertiesBuilder.put("com.azure.messaging.eventhubs.EventHubProducerClient", comAzureMessagingEventhubsEventHubProducerClient);
-
+        getCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
+
+
 }
