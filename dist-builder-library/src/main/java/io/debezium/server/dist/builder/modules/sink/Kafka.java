@@ -37,7 +37,6 @@ public class Kafka implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         if (kafkaProducer != null && !kafkaProducer.isEmpty()) {
             builder.putAllWithPrefix("debezium.sink.kafka.producer.", kafkaProducer);

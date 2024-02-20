@@ -49,7 +49,6 @@ public class Pulsar implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "pulsar.timeout", pulsarTimeout);
         builder.putAllWithPrefix("debezium.sink.pulsar.client.", pulsarClient);

@@ -21,7 +21,6 @@ public class JdbcBaseStorage implements PropertiesConfig, YamlConfig {
     String username;
     String password;
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("jdbc.url", url);
         builder.put("jdbc.username", username);

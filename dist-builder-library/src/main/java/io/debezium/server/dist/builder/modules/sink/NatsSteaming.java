@@ -46,7 +46,6 @@ public class NatsSteaming implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "nats-streaming.url", natsStreamingUrl);
         builder.put(SINK_NODE_CONFIG_PREFIX + "nats-streaming.cluster.id", natsStreamingClusterId);

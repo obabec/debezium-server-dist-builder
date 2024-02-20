@@ -27,7 +27,6 @@ public class SignalConfiguration implements PropertiesConfig, YamlConfig {
     public SignalConfiguration() {
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         String PREFIX = "debezium.source.signal.kafka";
         builder.put(PREFIX + "topic", topic);

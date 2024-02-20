@@ -34,7 +34,6 @@ public class RocketMQStorageConfig implements SchemaHistoryStorage {
     private Integer recoveryPollIntervalMs;
     private Integer storeRecordTimeoutMs;
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("rocketmq.topic", topic);
         builder.put("rocketmq.name.srv.addr", nameSrvAddr);

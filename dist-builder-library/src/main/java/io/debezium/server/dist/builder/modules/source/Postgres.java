@@ -112,8 +112,7 @@ public class Postgres extends SqlBasedConnectorConfig implements SourceNode {
         return ARTIFACT_ID;
     }
 
-    @Override
-    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+    public <C extends Config> void getPostgresCommonConfig(ConfigBuilder<C> builder) {
         builder.put(debeziumServerSourcePrefix + "plugin.name", pluginName);
         builder.put(debeziumServerSourcePrefix + "slot.name", slotName);
         builder.put(debeziumServerSourcePrefix + "slot.drop.on.stop", slotDropOnStop);
@@ -161,7 +160,7 @@ public class Postgres extends SqlBasedConnectorConfig implements SourceNode {
     @Override
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
-        getCommonConfig(yamlBuilder);
+        getPostgresCommonConfig(yamlBuilder);
         return yamlBuilder.getYaml();
     }
 
@@ -169,7 +168,7 @@ public class Postgres extends SqlBasedConnectorConfig implements SourceNode {
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        getCommonConfig(propertiesBuilder);
+        getPostgresCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
 }

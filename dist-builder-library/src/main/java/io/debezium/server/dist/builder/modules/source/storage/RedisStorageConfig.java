@@ -34,7 +34,6 @@ public class RedisStorageConfig implements StorageConfig, SchemaHistoryStorage {
     private Boolean waitRetryEnabled;
     private Integer waitRetryDelayMs;
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("redis.address", address);
         builder.put("redis.user", user);

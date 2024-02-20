@@ -30,7 +30,6 @@ public class JdbcSchemaHistory extends JdbcBaseStorage implements SchemaHistoryS
 
     private String schemaHistoryTableInsert;
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("jdbc.schema.history.table.name", schemaHistoryTableName);
         builder.put("jdbc.schema.history.table.ddl", schemaHistoryTableDdl);

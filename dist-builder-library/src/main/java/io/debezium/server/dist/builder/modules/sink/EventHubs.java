@@ -49,7 +49,6 @@ public class EventHubs implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.connectionstring", eventhubsConnectionstring);
         builder.put(SINK_NODE_CONFIG_PREFIX + "eventhubs.hubname", eventhubsHubname);

@@ -57,8 +57,7 @@ public class SqlBasedConnectorConfig extends ConnectorConfig {
     protected ProcessingFailureHandlingMode eventProcessingFailureHandlingMode;
 
 
-    @Override
-    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+    public <C extends Config> void getSqlCommonConfig(ConfigBuilder<C> builder) {
         builder.put(debeziumServerSourcePrefix + "database.hostname", databaseHostname);
         builder.put(debeziumServerSourcePrefix + "database.port", databasePort);
         builder.put(debeziumServerSourcePrefix + "database.user", databaseUser);
@@ -85,7 +84,7 @@ public class SqlBasedConnectorConfig extends ConnectorConfig {
     @Override
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder(super.toYaml());
-        getCommonConfig(yamlBuilder);
+        getSqlCommonConfig(yamlBuilder);
         return yamlBuilder.getYaml();
     }
 
@@ -93,7 +92,7 @@ public class SqlBasedConnectorConfig extends ConnectorConfig {
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
-        getCommonConfig(propertiesBuilder);
+        getSqlCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
 

@@ -36,7 +36,6 @@ public class InternalSchemaHistory implements PropertiesConfig, YamlConfig, Modu
     private SchemaHistoryStorage storageConfig;
 
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("debezium.source.schema.history.internal", schemaHistoryClass);
         builder.put("debezium.source.schema.history.internal.name", connectorName);

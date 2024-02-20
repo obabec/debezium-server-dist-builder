@@ -52,7 +52,6 @@ public class Kinesis extends SinkConfig implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.region", kinesisRegion);
         builder.put(SINK_NODE_CONFIG_PREFIX + "kinesis.endpoint", kinesisEndpoint);

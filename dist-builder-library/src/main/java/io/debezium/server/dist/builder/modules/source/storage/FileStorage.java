@@ -26,7 +26,6 @@ public class FileStorage implements StorageConfig {
 
     private String fileFilename;
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("file.filename", fileFilename);
     }

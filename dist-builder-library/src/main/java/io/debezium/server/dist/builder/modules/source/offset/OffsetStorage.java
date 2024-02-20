@@ -28,7 +28,6 @@ public class OffsetStorage implements PropertiesConfig, YamlConfig, ModuleNode {
     private String offsetStorage;
     private StorageConfig storageConfig;
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("debezium.source.offset.storage", offsetStorage);
     }

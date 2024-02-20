@@ -49,8 +49,7 @@ public class Db2 extends SqlBasedConnectorConfig implements SourceNode {
         return ARTIFACT_ID;
     }
 
-    @Override
-    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+    public <C extends Config> void getDb2CommonConfig(ConfigBuilder<C> builder) {
         builder.putEnum(debeziumServerSourcePrefix + "snapshot.isolation.mode", snapshotIsolationMode);
         builder.put(debeziumServerSourcePrefix + "poll.interval.ms", pollIntervalMs);
     }
@@ -58,7 +57,7 @@ public class Db2 extends SqlBasedConnectorConfig implements SourceNode {
     @Override
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
-        getCommonConfig(yamlBuilder);
+        getDb2CommonConfig(yamlBuilder);
         yamlBuilder.putAll(schemaHistoryInternalConfig);
         return yamlBuilder.getYaml();
     }
@@ -67,7 +66,7 @@ public class Db2 extends SqlBasedConnectorConfig implements SourceNode {
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        getCommonConfig(propertiesBuilder);
+        getDb2CommonConfig(propertiesBuilder);
         propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }

@@ -67,8 +67,7 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
         return ARTIFACT_ID;
     }
 
-    @Override
-    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+    public <C extends Config> void getOracleCommonConfig(ConfigBuilder<C> builder) {
         builder.put(debeziumServerSourcePrefix + "database.dbname", databaseDbname);
         builder.put(debeziumServerSourcePrefix + "database.url", databaseUrl);
         builder.put(debeziumServerSourcePrefix + "database.pdb.name", databasePbdName);
@@ -95,7 +94,7 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
     @Override
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
-        getCommonConfig(yamlBuilder);
+        getOracleCommonConfig(yamlBuilder);
         yamlBuilder.putAll(schemaHistoryInternalConfig);
         yamlBuilder.putAll(logMiningConfig);
         return yamlBuilder.getYaml();
@@ -104,7 +103,7 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
-        getCommonConfig(propertiesBuilder);
+        getOracleCommonConfig(propertiesBuilder);
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
         propertiesBuilder.putAll(logMiningConfig);
         propertiesBuilder.putAll(schemaHistoryInternalConfig);

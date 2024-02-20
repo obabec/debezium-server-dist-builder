@@ -68,7 +68,6 @@ public class LogMiningConfig implements PropertiesConfig, YamlConfig {
 
     private String flushTableName;
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         final String PREFIX = "debezium.source.log.mining.";
         builder.putEnumWithLowerCase(PREFIX + "strategy", strategy);

@@ -39,7 +39,6 @@ public class S3StorageConfig implements SchemaHistoryStorage {
         return ModuleDependencyBuilder.buildDependency(document, ARTIFACT_ID, dependencyList);
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("s3.access.key.id", accessKeyId);
         builder.put("s3.secret.access.key", secretAccessKey);

@@ -55,7 +55,6 @@ public class RocketMQ implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "rocketmq.producer.name.srv.addr", rocketmqProducerNameSrvAddr);
         builder.put(SINK_NODE_CONFIG_PREFIX + "rocketmq.producer.group", rocketmqProducerGroup);

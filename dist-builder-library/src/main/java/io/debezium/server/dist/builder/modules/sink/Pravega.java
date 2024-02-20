@@ -44,7 +44,6 @@ public class Pravega implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "pravega.controller.uri", pravegaControllerUri);
         builder.put(SINK_NODE_CONFIG_PREFIX + "pravega.scope", pravegaScope);

@@ -51,7 +51,6 @@ public class PubSubLite implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "pubsublite.project.id", pubsubliteProjectId);
         builder.put(SINK_NODE_CONFIG_PREFIX + "pubsublite.region", pubsubliteRegion);

@@ -72,8 +72,7 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
         return ARTIFACT_ID;
     }
 
-    @Override
-    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+    public <C extends Config> void getSqlServerCommonConfig(ConfigBuilder<C> builder) {
         builder.put(debeziumServerSourcePrefix + "database.instance", databaseInstance);
         builder.putList(debeziumServerSourcePrefix + "database.names", databaseNames);
         builder.putList(debeziumServerSourcePrefix + "schema.include.list", schemaIncludeList);
@@ -94,7 +93,7 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        getCommonConfig(propertiesBuilder);
+        getSqlServerCommonConfig(propertiesBuilder);
         propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }
@@ -102,7 +101,7 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
     @Override
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
-        getCommonConfig(yamlBuilder);
+        getSqlServerCommonConfig(yamlBuilder);
         yamlBuilder.putAll(schemaHistoryInternalConfig);
         return yamlBuilder.getYaml();
     }

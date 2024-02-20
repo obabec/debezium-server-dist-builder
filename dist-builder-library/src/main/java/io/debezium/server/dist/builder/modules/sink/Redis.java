@@ -73,7 +73,6 @@ public class Redis implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "redis.address", redisAddress);
         builder.put(SINK_NODE_CONFIG_PREFIX + "redis.user", redisUser);

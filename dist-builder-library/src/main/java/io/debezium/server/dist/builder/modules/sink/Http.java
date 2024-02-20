@@ -59,7 +59,6 @@ public class Http implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "http.url", httpUrl);
         builder.put(SINK_NODE_CONFIG_PREFIX + "http.timeout.ms", httpTimeoutMs);

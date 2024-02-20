@@ -35,7 +35,6 @@ public class KafkaStorageConfig implements SchemaHistoryStorage {
         return ModuleDependencyBuilder.buildDependency(document, ARTIFACT_ID, dependencyList);
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("kafka.topic", topic);
         builder.put("kafka.bootstrap.servers", bootstrapServers);

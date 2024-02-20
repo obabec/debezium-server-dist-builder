@@ -96,8 +96,7 @@ public class Mongo extends ConnectorConfig implements SourceNode {
         return ARTIFACT_ID;
     }
 
-    @Override
-    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+    public <C extends Config> void getMongoCommonConfig(ConfigBuilder<C> builder) {
         builder.put(debeziumServerSourcePrefix + "mongodb.connection.string", mongodbConnectionString);
         builder.putEnumWithLowerCase(debeziumServerSourcePrefix + "mongodb.connection.mode", mongodbConnectionMode);
         builder.put(debeziumServerSourcePrefix + "mongodb.user", mongodbUser);
@@ -130,7 +129,7 @@ public class Mongo extends ConnectorConfig implements SourceNode {
     @Override
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
-        getCommonConfig(yamlBuilder);
+        getMongoCommonConfig(yamlBuilder);
         return yamlBuilder.getYaml();
     }
 
@@ -138,7 +137,7 @@ public class Mongo extends ConnectorConfig implements SourceNode {
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        getCommonConfig(propertiesBuilder);
+        getMongoCommonConfig(propertiesBuilder);
         return propertiesBuilder.getProperties();
     }
 }

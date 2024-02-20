@@ -39,7 +39,6 @@ public class SchemaHistoryInternalConfig implements PropertiesConfig, YamlConfig
     public SchemaHistoryInternalConfig() {
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         String PREFIX = "debezium.source.schema.history.internal";
         builder.put(PREFIX + "kafka.topic", kafkaTopic);

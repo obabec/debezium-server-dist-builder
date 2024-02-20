@@ -28,7 +28,6 @@ public class JdbcOffsetStorage extends JdbcBaseStorage implements StorageConfig 
     private String offsetTableDelete;
     private String offsetTableInsert;
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("jdbc.offset.table.name", offsetTableName);
         builder.put("jdbc.offset.table.ddl", offsetTableDdl);

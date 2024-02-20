@@ -59,7 +59,7 @@ public class ConnectorConfig implements PropertiesConfig, YamlConfig {
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
-        getCommonConfig(propertiesBuilder);
+        getConnectorCommonConfig(propertiesBuilder);
         propertiesBuilder.putAll(signalConfiguration);
         return propertiesBuilder.getProperties();
     }
@@ -67,13 +67,12 @@ public class ConnectorConfig implements PropertiesConfig, YamlConfig {
     @Override
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
-        getCommonConfig(yamlBuilder);
+        getConnectorCommonConfig(yamlBuilder);
         yamlBuilder.putAll(signalConfiguration);
         return yamlBuilder.getYaml();
     }
 
-    @Override
-    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+    public <C extends Config> void getConnectorCommonConfig(ConfigBuilder<C> builder) {
         builder.put(debeziumServerSourcePrefix + "name", this.name);
         builder.put(debeziumServerSourcePrefix + "topic.prefix", this.topicPrefix);
         builder.putList(debeziumServerSourcePrefix + "database.include.list", databaseIncludeList);

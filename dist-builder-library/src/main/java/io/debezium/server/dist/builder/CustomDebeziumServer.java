@@ -76,7 +76,6 @@ public class CustomDebeziumServer implements PropertiesConfig, YamlConfig {
         return null;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
     }
 }

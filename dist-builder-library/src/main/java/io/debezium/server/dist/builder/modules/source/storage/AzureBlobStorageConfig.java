@@ -20,7 +20,6 @@ public class AzureBlobStorageConfig implements StorageConfig, SchemaHistoryStora
     private String storageAccountContainerName;
     private String storageBlobName;
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put("azure.storage.account.connectionstring", storageAccountConnectionString);
         builder.put("azure.storage.account.container.name", storageAccountContainerName);

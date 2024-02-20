@@ -93,8 +93,7 @@ public class Mysql extends SqlBasedConnectorConfig implements SourceNode {
         return ARTIFACT_ID;
     }
 
-    @Override
-    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
+    public <C extends Config> void getMysqlCommonConfig(ConfigBuilder<C> builder) {
         builder.put(debeziumServerSourcePrefix + "database.server.id", databaseServerId);
         builder.put(debeziumServerSourcePrefix + "bigint.unsigned.handling.mode", bigintUnsignedHandlingMode);
         builder.putBoolean(debeziumServerSourcePrefix + "include.schema.comments", includeSchemaComments);
@@ -125,7 +124,7 @@ public class Mysql extends SqlBasedConnectorConfig implements SourceNode {
         YamlBuilder yamlBuilder = new YamlBuilder();
         
         YamlBuilder config = new YamlBuilder(super.toYaml());
-        getCommonConfig(config);
+        getMysqlCommonConfig(config);
         config.putAll(schemaHistoryInternalConfig);
         yamlBuilder.put("config", config.getYaml());
         return yamlBuilder.getYaml();
@@ -135,7 +134,7 @@ public class Mysql extends SqlBasedConnectorConfig implements SourceNode {
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
-        getCommonConfig(propertiesBuilder);
+        getMysqlCommonConfig(propertiesBuilder);
         propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }

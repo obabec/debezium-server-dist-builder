@@ -48,7 +48,6 @@ public class Infinispan implements SinkNode {
         return ARTIFACT_ID;
     }
 
-    @Override
     public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
         builder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.server.host", infinispanServerHost);
         builder.put(SINK_NODE_CONFIG_PREFIX + "infinispan.server.port", infinispanServerPort);
