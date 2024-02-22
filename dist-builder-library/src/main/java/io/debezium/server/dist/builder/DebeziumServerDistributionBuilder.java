@@ -35,11 +35,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+
+import static java.util.Objects.nonNull;
 
 
 //TODO:
@@ -59,13 +62,8 @@ public class DebeziumServerDistributionBuilder {
     private Git distRepo;
     private Document pom;
     private Node dependenciesNode;
-
+    private final String VERSION = "2.5.1.Final";
     public DebeziumServerDistributionBuilder() {
-    }
-
-    public DebeziumServerDistributionBuilder withVersion(String version) {
-        ModuleDependencyBuilder.version = version;
-        return this;
     }
 
     public DebeziumServerDistributionBuilder withDebeziumServer(CustomDebeziumServer server) {
@@ -90,12 +88,23 @@ public class DebeziumServerDistributionBuilder {
         this.pathToProject = path;
         return this;
     }
-
+// ((DeferredElementImpl) pom.getFirstChild().getFirstChild().getNextSibling().getChildNodes()).getElementsByTagName("version")
     private void preparePomDocument() {
         DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
         try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("base-pom.xml")) {
             DocumentBuilder docBuilder = docFac.newDocumentBuilder();
             pom = docBuilder.parse(is);
+
+            Node parent = pom.getElementsByTagName("parent").item(0);
+
+            Node node = pom.createElement("version");
+            if (nonNull(customDebeziumServer.getVersion())) {
+                node.setTextContent(customDebeziumServer.getVersion());
+            } else {
+                node.setTextContent(VERSION);
+            }
+            parent.appendChild(node);
+
             NodeList dependencyNodes = pom.getElementsByTagName("dependencies");
             if (dependencyNodes.getLength() == 0) {
                 LOGGER.error("[ERROR] Base pom file from resources is corrupted!");
@@ -127,16 +136,22 @@ public class DebeziumServerDistributionBuilder {
 
     private void copyDockerFile() throws IOException {
         InputStream is = getClass().getClassLoader().getResourceAsStream("Dockerfile");
-        File f = new File(String.format("%s/Dockerfile", pathToProject));
-        if (!f.exists()) {
-            f.createNewFile();
-        }
-        try (FileOutputStream fs = new FileOutputStream(f)) {
-            if (is != null) {
-                fs.write(is.readAllBytes());
+        if (nonNull(is)) {
+            String dockerfile =  new String(is.readAllBytes(), StandardCharsets.UTF_8);
+            if (nonNull(customDebeziumServer.getVersion())) {
+                dockerfile = dockerfile.replace("$dbz_version", customDebeziumServer.getVersion());
+            } else {
+                dockerfile = dockerfile.replace("$dbz_version", VERSION);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            File f = new File(String.format("%s/Dockerfile", pathToProject));
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            try (FileOutputStream fs = new FileOutputStream(f)) {
+                fs.write(dockerfile.getBytes(StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

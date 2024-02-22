@@ -27,6 +27,7 @@ import java.util.Properties;
 @Setter
 @Buildable
 public class CustomDebeziumServer implements PropertiesConfig, YamlConfig {
+    private String version;
     private SourceNode sourceNode;
     private SinkNode sinkNode;
 
