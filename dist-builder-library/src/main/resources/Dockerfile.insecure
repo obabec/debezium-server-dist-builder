@@ -1,0 +1,16 @@
+FROM openjdk:17
+LABEL authors="obabec"
+
+RUN microdnf install -y zip
+
+ADD target/debezium-server-custom-dist-$dbz_version.zip distribution.zip
+
+RUN unzip distribution.zip
+
+WORKDIR debezium-server
+
+RUN chmod +x run.sh
+
+RUN ls
+ENTRYPOINT ["/bin/bash"]
+CMD ["/debezium-server/run.sh"]

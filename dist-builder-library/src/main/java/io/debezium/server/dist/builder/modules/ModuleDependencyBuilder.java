@@ -1,13 +1,13 @@
 package io.debezium.server.dist.builder.modules;
 
+import java.util.List;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import java.util.List;
-
 public class ModuleDependencyBuilder {
     public static String version = "${version.debezium}";
-    private static String groupId = "io.debezium";
+    private static final String groupId = "io.debezium";
 
     public static Node buildDependency(Document document, String artifactId, List<Dependency> dependencyList) {
         Dependency newDep = new Dependency(groupId, artifactId, "");
@@ -34,8 +34,6 @@ public class ModuleDependencyBuilder {
 
     public static Node buildDependency(Document document, Dependency customDependency, List<Dependency> dependencyList) {
         if (!dependencyList.contains(customDependency)) {
-
-
             Node dependency = document.createElement("dependency");
             if (customDependency.getComment() != null && !customDependency.getComment().isEmpty()) {
                 dependency.appendChild(document.createComment(customDependency.getComment()));

@@ -1,0 +1,1594 @@
+{
+  "type" : "interface",
+  "options" : [ {
+    "name" : "Postgres",
+    "type" : "class",
+    "clazz" : "io.debezium.server.dist.builder.modules.source.Postgres",
+    "fields" : [ {
+      "name" : "pluginName",
+      "type" : "enum",
+      "variants" : [ "DECODERBUFS", "PGOUTPUT" ]
+    }, {
+      "name" : "slotName",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "slotDropOnStop",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "publicationName",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseDbname",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "schemaIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "schemaExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "hstoreHandlingMode",
+      "type" : "java.util.HashMap<java.lang.String, java.lang.String>"
+    }, {
+      "name" : "databaseSSLMode",
+      "type" : "enum",
+      "variants" : [ "DISABLE", "ALLOW", "PREFER", "REQUIRE", "VERIFY_CA", "VERIFY_FULL" ]
+    }, {
+      "name" : "skipMessagesWithoutChange",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "databaseSSLCert",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseSSLKey",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseSSLPassword",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseSSLRootCert",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseTCPKeepAlive",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "publicationAutocreateMode",
+      "type" : "enum",
+      "variants" : [ "ALL_TABLES", "DISABLED", "FILTERED" ]
+    }, {
+      "name" : "replicaIdentityAutosetValues",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "moneyFractionDigits",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "messagePrefixIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "messagePrefixExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "snapshotLockingMode",
+      "type" : "enum",
+      "variants" : [ "SHARED", "NONE" ]
+    }, {
+      "name" : "snapshotCustomClass",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "pollIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "includeUnknownDatatypes",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "databaseInitialStatements",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "statusUpdateIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "heartbeatActionQuery",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "schemaRefreshMode",
+      "type" : "enum",
+      "variants" : [ "COLUMNS_DIFF", "COLUMNS_DIFF_EXCLUDE_UNCHANGED_TOAST" ]
+    }, {
+      "name" : "slotStreamParams",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "slotMaxRetries",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "slotRetryDelayMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "unavailableValuePlaceholder",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "provideTransactionMetadata",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "flushLsnSource",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "retriableRestartConnectorWaitMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "xminFetchIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "databaseHostname",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePort",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "databaseUser",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePassword",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "tableIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tableExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "timePrecisionMode",
+      "type" : "enum",
+      "variants" : [ "ADAPTIVE", "ADAPTIVE_TIME_MICROSECONDS", "CONNECT" ]
+    }, {
+      "name" : "decimalHandlingMode",
+      "type" : "enum",
+      "variants" : [ "PRECISE", "DOUBLE", "STRING" ]
+    }, {
+      "name" : "includeSchemaChanges",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "columnTruncateToLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnMaskWithLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnPropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "datatypePropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "messageKeyColumns",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "converters",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "binaryHandlingMode",
+      "type" : "enum",
+      "variants" : [ "BYTES", "BASE64", "BASE64_URL_SAFE" ]
+    }, {
+      "name" : "snapshotLockTimeoutMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotSelectStatementOverrides",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "eventProcessingFailureHandlingMode",
+      "type" : "enum",
+      "variants" : [ "FAIL", "WARN", "SKIP" ]
+    }, {
+      "name" : "name",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "databaseExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "snapshotMode",
+      "type" : "enum",
+      "variants" : [ "INITIAL", "INITIAL_ONLY", "WHEN_NEEDED", "NEVER", "SCHEMA_ONLY", "SCHEMA_ONLY_RECOVERY" ]
+    }, {
+      "name" : "snapshotIncludeCollectionList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tasksMax",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotMaxThreads",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "tombstonesOnDelete",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "snapshotDelayMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotFetchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "schemaNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "fieldNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "maxBatchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSizeInBytes",
+      "type" : "java.lang.Long"
+    }, {
+      "name" : "heartbeatIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "skippedOperations",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "provideTransactionMetadata",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "signalDataCollection",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "notificationsEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "incrementalSnapshotChunkSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicNamingStrategy",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicDelimiter",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicCacheSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicHeartbeatPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicTransaction",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "notificationsSinkTopicName",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalConfiguration",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SignalConfiguration",
+      "fields" : [ {
+        "name" : "topic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "pollTimeoutMs",
+        "type" : "java.lang.Integer"
+      } ]
+    } ]
+  }, {
+    "name" : "SqlServer",
+    "type" : "class",
+    "clazz" : "io.debezium.server.dist.builder.modules.source.SqlServer",
+    "fields" : [ {
+      "name" : "databaseInstance",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseNames",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "schemaIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "schemaExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "skipMessagesWithoutChange",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "snapshotLockingMode",
+      "type" : "enum",
+      "variants" : [ "SHARED", "NONE" ]
+    }, {
+      "name" : "snapshotIsolationMode",
+      "type" : "enum",
+      "variants" : [ "READ_UNCOMMITTED", "READ_COMMITTED", "REPEATABLE_READ", "SNAPSHOT", "EXCLUSIVE" ]
+    }, {
+      "name" : "pollIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "queryFetchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "sourceStructVersion",
+      "type" : "enum",
+      "variants" : [ "V1", "V2" ]
+    }, {
+      "name" : "retriableRestartConnectorWaitMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "incrementalSnapshotAllowSchemaChanges",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "maxIterationTransaction",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "incrementalSnapshotOptionRecompile",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "schemaHistoryInternalConfig",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig",
+      "fields" : [ {
+        "name" : "kafkaTopic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "kafkaBootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "kafkaRecoveryPollIntervalMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaQueryTimeoutMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaCreateTimeoutMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaRecoveryAttempts",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "skipUnparseableDdl",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "storeOnlyCapturedTablesDdl",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "storeOnlyCapturedDatabasesDdl",
+        "type" : "java.lang.Boolean"
+      } ]
+    }, {
+      "name" : "databaseHostname",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePort",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "databaseUser",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePassword",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "tableIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tableExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "timePrecisionMode",
+      "type" : "enum",
+      "variants" : [ "ADAPTIVE", "ADAPTIVE_TIME_MICROSECONDS", "CONNECT" ]
+    }, {
+      "name" : "decimalHandlingMode",
+      "type" : "enum",
+      "variants" : [ "PRECISE", "DOUBLE", "STRING" ]
+    }, {
+      "name" : "includeSchemaChanges",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "columnTruncateToLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnMaskWithLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnPropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "datatypePropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "messageKeyColumns",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "converters",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "binaryHandlingMode",
+      "type" : "enum",
+      "variants" : [ "BYTES", "BASE64", "BASE64_URL_SAFE" ]
+    }, {
+      "name" : "snapshotLockTimeoutMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotSelectStatementOverrides",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "eventProcessingFailureHandlingMode",
+      "type" : "enum",
+      "variants" : [ "FAIL", "WARN", "SKIP" ]
+    }, {
+      "name" : "name",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "databaseExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "snapshotMode",
+      "type" : "enum",
+      "variants" : [ "INITIAL", "INITIAL_ONLY", "WHEN_NEEDED", "NEVER", "SCHEMA_ONLY", "SCHEMA_ONLY_RECOVERY" ]
+    }, {
+      "name" : "snapshotIncludeCollectionList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tasksMax",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotMaxThreads",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "tombstonesOnDelete",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "snapshotDelayMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotFetchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "schemaNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "fieldNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "maxBatchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSizeInBytes",
+      "type" : "java.lang.Long"
+    }, {
+      "name" : "heartbeatIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "skippedOperations",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "provideTransactionMetadata",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "signalDataCollection",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "notificationsEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "incrementalSnapshotChunkSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicNamingStrategy",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicDelimiter",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicCacheSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicHeartbeatPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicTransaction",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "notificationsSinkTopicName",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalConfiguration",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SignalConfiguration",
+      "fields" : [ {
+        "name" : "topic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "pollTimeoutMs",
+        "type" : "java.lang.Integer"
+      } ]
+    } ]
+  }, {
+    "name" : "Db2",
+    "type" : "class",
+    "clazz" : "io.debezium.server.dist.builder.modules.source.Db2",
+    "fields" : [ {
+      "name" : "snapshotIsolationMode",
+      "type" : "enum",
+      "variants" : [ "READ_UNCOMMITTED", "READ_COMMITTED", "REPEATABLE_READ", "SNAPSHOT", "EXCLUSIVE" ]
+    }, {
+      "name" : "pollIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "schemaHistoryInternalConfig",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig",
+      "fields" : [ {
+        "name" : "kafkaTopic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "kafkaBootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "kafkaRecoveryPollIntervalMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaQueryTimeoutMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaCreateTimeoutMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaRecoveryAttempts",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "skipUnparseableDdl",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "storeOnlyCapturedTablesDdl",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "storeOnlyCapturedDatabasesDdl",
+        "type" : "java.lang.Boolean"
+      } ]
+    }, {
+      "name" : "databaseHostname",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePort",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "databaseUser",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePassword",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "tableIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tableExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "timePrecisionMode",
+      "type" : "enum",
+      "variants" : [ "ADAPTIVE", "ADAPTIVE_TIME_MICROSECONDS", "CONNECT" ]
+    }, {
+      "name" : "decimalHandlingMode",
+      "type" : "enum",
+      "variants" : [ "PRECISE", "DOUBLE", "STRING" ]
+    }, {
+      "name" : "includeSchemaChanges",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "columnTruncateToLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnMaskWithLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnPropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "datatypePropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "messageKeyColumns",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "converters",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "binaryHandlingMode",
+      "type" : "enum",
+      "variants" : [ "BYTES", "BASE64", "BASE64_URL_SAFE" ]
+    }, {
+      "name" : "snapshotLockTimeoutMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotSelectStatementOverrides",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "eventProcessingFailureHandlingMode",
+      "type" : "enum",
+      "variants" : [ "FAIL", "WARN", "SKIP" ]
+    }, {
+      "name" : "name",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "databaseExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "snapshotMode",
+      "type" : "enum",
+      "variants" : [ "INITIAL", "INITIAL_ONLY", "WHEN_NEEDED", "NEVER", "SCHEMA_ONLY", "SCHEMA_ONLY_RECOVERY" ]
+    }, {
+      "name" : "snapshotIncludeCollectionList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tasksMax",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotMaxThreads",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "tombstonesOnDelete",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "snapshotDelayMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotFetchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "schemaNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "fieldNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "maxBatchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSizeInBytes",
+      "type" : "java.lang.Long"
+    }, {
+      "name" : "heartbeatIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "skippedOperations",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "provideTransactionMetadata",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "signalDataCollection",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "notificationsEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "incrementalSnapshotChunkSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicNamingStrategy",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicDelimiter",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicCacheSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicHeartbeatPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicTransaction",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "notificationsSinkTopicName",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalConfiguration",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SignalConfiguration",
+      "fields" : [ {
+        "name" : "topic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "pollTimeoutMs",
+        "type" : "java.lang.Integer"
+      } ]
+    } ]
+  }, {
+    "name" : "Mongo",
+    "type" : "class",
+    "clazz" : "io.debezium.server.dist.builder.modules.source.Mongo",
+    "fields" : [ {
+      "name" : "mongodbConnectionString",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "mongodbConnectionMode",
+      "type" : "enum",
+      "variants" : [ "REPLICA_SET", "SHARDED" ]
+    }, {
+      "name" : "mongodbUser",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "mongodbPassword",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "mongodbAuthSource",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "mongodbSslEnabled",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "mongodbSslInvalidHostnameAllowed",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "collectionIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "collectionExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "captureMode",
+      "type" : "enum",
+      "variants" : [ "CHANGE_STREAMS", "CHANGE_STREAMS_UPDATE_FULL", "CHANGE_STREAMS_UPDATE_FULL_WITH_PRE_IMAGE", "CHANGE_STREAMS_WITH_PRE_IMAGE" ]
+    }, {
+      "name" : "fieldExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "fieldRenames",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "mongodbHosts",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "pollIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "connectBackoffInitialDelayMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "connectBackoffMaxDelayMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "connectMaxAttempts",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "sourceStructVersion",
+      "type" : "enum",
+      "variants" : [ "V1", "V2" ]
+    }, {
+      "name" : "snapshotCollectionFilterOverrides",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "retriableRestartConnectorWaitMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "mongodbPollIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "mongodbConnectTimeoutMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "mongodbHeartbeatFrequencyMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "mongodbSocketTimeoutMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "mongodbServerSelectionTimeoutMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "cursorPipeline",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "cursorMaxAwaitTimeMs",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "name",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "databaseExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "snapshotMode",
+      "type" : "enum",
+      "variants" : [ "INITIAL", "INITIAL_ONLY", "WHEN_NEEDED", "NEVER", "SCHEMA_ONLY", "SCHEMA_ONLY_RECOVERY" ]
+    }, {
+      "name" : "snapshotIncludeCollectionList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tasksMax",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotMaxThreads",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "tombstonesOnDelete",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "snapshotDelayMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotFetchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "schemaNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "fieldNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "maxBatchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSizeInBytes",
+      "type" : "java.lang.Long"
+    }, {
+      "name" : "heartbeatIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "skippedOperations",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "provideTransactionMetadata",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "signalDataCollection",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "notificationsEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "incrementalSnapshotChunkSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicNamingStrategy",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicDelimiter",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicCacheSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicHeartbeatPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicTransaction",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "notificationsSinkTopicName",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalConfiguration",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SignalConfiguration",
+      "fields" : [ {
+        "name" : "topic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "pollTimeoutMs",
+        "type" : "java.lang.Integer"
+      } ]
+    } ]
+  }, {
+    "name" : "Mysql",
+    "type" : "class",
+    "clazz" : "io.debezium.server.dist.builder.modules.source.Mysql",
+    "fields" : [ {
+      "name" : "databaseServerId",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "bigintUnsignedHandlingMode",
+      "type" : "enum",
+      "variants" : [ "PRECISE", "LONG" ]
+    }, {
+      "name" : "includeSchemaComments",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "includeQuery",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "eventDeserializationFailureHandlingMode",
+      "type" : "enum",
+      "variants" : [ "FAIL", "WARN", "IGNORE" ]
+    }, {
+      "name" : "inconsistentSchemaHandlingMode",
+      "type" : "enum",
+      "variants" : [ "FAIL", "WARN", "SKIP" ]
+    }, {
+      "name" : "pollIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "connectTimeoutMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "gtidSourceIncludes",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "gtidSourceExcludes",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "skipMessagesWithoutChange",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "snapshotLockingMode",
+      "type" : "enum",
+      "variants" : [ "MINIMAL", "MINIMAL_PERCONA", "EXTENDED", "NONE" ]
+    }, {
+      "name" : "connectKeepAlive",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "tableIgnoreBuiltin",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "databaseSslMode",
+      "type" : "enum",
+      "variants" : [ "DISABLE", "ALLOW", "PREFER", "REQUIRE", "VERIFY_CA", "VERIFY_FULL" ]
+    }, {
+      "name" : "binlogBufferSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "minRowCountToStreamResults",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "heartbeatActionQuery",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseInitialStatements",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "enableTimeAdjuster",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "incrementalSnapshotAllowSchemaChanges",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "readOnly",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "snapshotTablesOrderByRowCount",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "schemaHistoryInternalConfig",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig",
+      "fields" : [ {
+        "name" : "kafkaTopic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "kafkaBootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "kafkaRecoveryPollIntervalMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaQueryTimeoutMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaCreateTimeoutMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaRecoveryAttempts",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "skipUnparseableDdl",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "storeOnlyCapturedTablesDdl",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "storeOnlyCapturedDatabasesDdl",
+        "type" : "java.lang.Boolean"
+      } ]
+    }, {
+      "name" : "databaseHostname",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePort",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "databaseUser",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePassword",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "tableIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tableExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "timePrecisionMode",
+      "type" : "enum",
+      "variants" : [ "ADAPTIVE", "ADAPTIVE_TIME_MICROSECONDS", "CONNECT" ]
+    }, {
+      "name" : "decimalHandlingMode",
+      "type" : "enum",
+      "variants" : [ "PRECISE", "DOUBLE", "STRING" ]
+    }, {
+      "name" : "includeSchemaChanges",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "columnTruncateToLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnMaskWithLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnPropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "datatypePropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "messageKeyColumns",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "converters",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "binaryHandlingMode",
+      "type" : "enum",
+      "variants" : [ "BYTES", "BASE64", "BASE64_URL_SAFE" ]
+    }, {
+      "name" : "snapshotLockTimeoutMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotSelectStatementOverrides",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "eventProcessingFailureHandlingMode",
+      "type" : "enum",
+      "variants" : [ "FAIL", "WARN", "SKIP" ]
+    }, {
+      "name" : "name",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "databaseExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "snapshotMode",
+      "type" : "enum",
+      "variants" : [ "INITIAL", "INITIAL_ONLY", "WHEN_NEEDED", "NEVER", "SCHEMA_ONLY", "SCHEMA_ONLY_RECOVERY" ]
+    }, {
+      "name" : "snapshotIncludeCollectionList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tasksMax",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotMaxThreads",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "tombstonesOnDelete",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "snapshotDelayMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotFetchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "schemaNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "fieldNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "maxBatchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSizeInBytes",
+      "type" : "java.lang.Long"
+    }, {
+      "name" : "heartbeatIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "skippedOperations",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "provideTransactionMetadata",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "signalDataCollection",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "notificationsEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "incrementalSnapshotChunkSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicNamingStrategy",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicDelimiter",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicCacheSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicHeartbeatPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicTransaction",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "notificationsSinkTopicName",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalConfiguration",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SignalConfiguration",
+      "fields" : [ {
+        "name" : "topic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "pollTimeoutMs",
+        "type" : "java.lang.Integer"
+      } ]
+    } ]
+  }, {
+    "name" : "Oracle",
+    "type" : "class",
+    "clazz" : "io.debezium.server.dist.builder.modules.source.Oracle",
+    "fields" : [ {
+      "name" : "racNodes",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "databaseDbname",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseUrl",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePbdName",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseConnectionAdapter",
+      "type" : "enum",
+      "variants" : [ "LOGMINER", "XSTREAM" ]
+    }, {
+      "name" : "schemaIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "skipMessagesWithoutChange",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "includeSchemaComments",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "schemaExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "binaryHandlingMode",
+      "type" : "enum",
+      "variants" : [ "BYTES", "BASE64", "BASE64_URL_SAFE" ]
+    }, {
+      "name" : "intervalHandlingMode",
+      "type" : "enum",
+      "variants" : [ "NUMERIC", "STRING" ]
+    }, {
+      "name" : "pollIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "heartbeatIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "heartbeatActionQuery",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "queryFetchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotLockingMode",
+      "type" : "enum",
+      "variants" : [ "SHARED", "NONE" ]
+    }, {
+      "name" : "logMiningConfig",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.logmine.LogMiningConfig",
+      "fields" : [ {
+        "name" : "strategy",
+        "type" : "enum",
+        "variants" : [ "REDO_LOG_CATALOG", "ONLINE_CATALOG" ]
+      }, {
+        "name" : "queryFilterMode",
+        "type" : "enum",
+        "variants" : [ "NONE", "IN", "REGEX" ]
+      }, {
+        "name" : "bufferType",
+        "type" : "enum",
+        "variants" : [ "MEMORY", "INFINISPAN_EMBEDDED", "INFINISPAN_REMOTE" ]
+      }, {
+        "name" : "bufferTransactionEventsThreshold",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "bufferInfinispanCacheTransactions",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bufferInfinispanCacheEvents",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bufferInfinispanCacheProcessedTransactions",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bufferInfinispanCacheSchemaChanges",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bufferDropOnStop",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "sessionMaxMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "restartConnection",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "batchSizeMin",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "batchSizeMax",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "batchSizeDefault",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "sleepTimeMinMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "sleepTimeMaxMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "sleepTimeDefaultMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "sleepTimeIncrementMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "archiveLogHours",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "archiveLogOnlyMode",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "archiveLogOnlyScnPollIntervalMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "transactionRetentionMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "archiveDestinationName",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "usernameIncludeList",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "usernameExcludeList",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "scnGapDetectionGapSizeMin",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "scnGapDetectionTimeIntervalMaxMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "flushTableName",
+        "type" : "java.lang.String"
+      } ]
+    }, {
+      "name" : "lobEnabled",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "unavailableValuePlaceholder",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "schemaHistoryInternalConfig",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig",
+      "fields" : [ {
+        "name" : "kafkaTopic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "kafkaBootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "kafkaRecoveryPollIntervalMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaQueryTimeoutMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaCreateTimeoutMs",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "kafkaRecoveryAttempts",
+        "type" : "java.lang.Integer"
+      }, {
+        "name" : "skipUnparseableDdl",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "storeOnlyCapturedTablesDdl",
+        "type" : "java.lang.Boolean"
+      }, {
+        "name" : "storeOnlyCapturedDatabasesDdl",
+        "type" : "java.lang.Boolean"
+      } ]
+    }, {
+      "name" : "databaseHostname",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePort",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "databaseUser",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databasePassword",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "tableIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tableExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "timePrecisionMode",
+      "type" : "enum",
+      "variants" : [ "ADAPTIVE", "ADAPTIVE_TIME_MICROSECONDS", "CONNECT" ]
+    }, {
+      "name" : "decimalHandlingMode",
+      "type" : "enum",
+      "variants" : [ "PRECISE", "DOUBLE", "STRING" ]
+    }, {
+      "name" : "includeSchemaChanges",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "columnTruncateToLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnMaskWithLengthChars",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "columnPropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "datatypePropagateSourceType",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "messageKeyColumns",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "converters",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "binaryHandlingMode",
+      "type" : "enum",
+      "variants" : [ "BYTES", "BASE64", "BASE64_URL_SAFE" ]
+    }, {
+      "name" : "snapshotLockTimeoutMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotSelectStatementOverrides",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "eventProcessingFailureHandlingMode",
+      "type" : "enum",
+      "variants" : [ "FAIL", "WARN", "SKIP" ]
+    }, {
+      "name" : "name",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "databaseIncludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "databaseExcludeList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "snapshotMode",
+      "type" : "enum",
+      "variants" : [ "INITIAL", "INITIAL_ONLY", "WHEN_NEEDED", "NEVER", "SCHEMA_ONLY", "SCHEMA_ONLY_RECOVERY" ]
+    }, {
+      "name" : "snapshotIncludeCollectionList",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "tasksMax",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotMaxThreads",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "tombstonesOnDelete",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "snapshotDelayMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "snapshotFetchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "schemaNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "fieldNameAdjustmentMode",
+      "type" : "enum",
+      "variants" : [ "NONE", "AVRO", "AVRO_UNICODE" ]
+    }, {
+      "name" : "maxBatchSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "maxQueueSizeInBytes",
+      "type" : "java.lang.Long"
+    }, {
+      "name" : "heartbeatIntervalMs",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "skippedOperations",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "provideTransactionMetadata",
+      "type" : "java.lang.Boolean"
+    }, {
+      "name" : "signalDataCollection",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "notificationsEnabledChannels",
+      "type" : "java.util.List<java.lang.String>"
+    }, {
+      "name" : "incrementalSnapshotChunkSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicNamingStrategy",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicDelimiter",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicCacheSize",
+      "type" : "java.lang.Integer"
+    }, {
+      "name" : "topicHeartbeatPrefix",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "topicTransaction",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "notificationsSinkTopicName",
+      "type" : "java.lang.String"
+    }, {
+      "name" : "signalConfiguration",
+      "type" : "class",
+      "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SignalConfiguration",
+      "fields" : [ {
+        "name" : "topic",
+        "type" : "java.lang.String"
+      }, {
+        "name" : "bootstrapServers",
+        "type" : "java.util.List<java.lang.String>"
+      }, {
+        "name" : "pollTimeoutMs",
+        "type" : "java.lang.Integer"
+      } ]
+    } ]
+  } ]
+}

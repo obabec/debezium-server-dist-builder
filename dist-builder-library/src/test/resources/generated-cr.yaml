@@ -1,0 +1,50 @@
+---
+apiVersion: "debezium.io/v1alpha1"
+kind: "DebeziumServer"
+metadata:
+  name: "custom-debezium-server"
+spec:
+  image: "IMAGE_PLACEHOLDER"
+  quarkus:
+    config: {}
+  runtime:
+    storage:
+      data:
+        type: "ephemeral"
+        claimName: null
+      external: []
+    environment:
+      vars: []
+      from: []
+    jmx:
+      authentication: {}
+    templates:
+      container:
+        probes:
+          readiness: {}
+          liveness: {}
+      pod: {}
+  format:
+    key:
+      type: "json"
+      config: {}
+    value:
+      type: "json"
+      config: {}
+    header:
+      type: "json"
+      config: {}
+  source:
+    config:
+      debezium.source.mongodb.hosts: "hostname"
+      debezium.source.offset.storage.file.filename: "file-name"
+      debezium.source.schema.history.internal: "schema.class"
+      debezium.source.schema.history.internal.file.filename: "file-name"
+      debezium.source.schema.history.internal.connector.id: "1"
+      debezium.source.capture.mode: "change_streams"
+    class: "io.debezium.connector.mongodb.MongoDbConnector"
+  sink:
+    type: "http"
+    config:
+      debezium.sink.http.url: "http-url"
+      debezium.sink.http.retries: 5

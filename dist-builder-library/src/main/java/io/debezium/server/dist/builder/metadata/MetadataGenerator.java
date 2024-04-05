@@ -1,21 +1,23 @@
 package io.debezium.server.dist.builder.metadata;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.debezium.server.dist.builder.CustomDebeziumServer;
-import org.reflections.Reflections;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.debezium.server.dist.builder.CustomDebeziumServer;
+import io.debezium.server.dist.builder.modules.SourceNode;
+import org.reflections.Reflections;
+
 public class MetadataGenerator {
 
-    public void generateMetadata(FileOutputStream fileOutputStream) throws ClassNotFoundException, IOException {
+    public void generateMetadata(OutputStream fileOutputStream) throws ClassNotFoundException, IOException {
         MetadataModelObject metadataModelObject = new MetadataModelObject();
         printFields(CustomDebeziumServer.class, metadataModelObject, null);
         ObjectMapper mapper = new ObjectMapper();
@@ -23,7 +25,15 @@ public class MetadataGenerator {
         mapper.writerWithDefaultPrettyPrinter().writeValue(fileOutputStream, metadataModelObject);
     }
 
-    private void processInterfaceClass(Class c, MetadataModelObject metadataModelObject) throws ClassNotFoundException {
+    public void generateSourceNodeMetadata(OutputStream fileOutputStream) throws ClassNotFoundException, IOException {
+        MetadataModelObject metadataModelObject = new MetadataModelObject();
+        printFields(SourceNode.class, metadataModelObject, null);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.writerWithDefaultPrettyPrinter().writeValue(fileOutputStream, metadataModelObject);
+    }
+
+    private void processInterfaceClass(Class<?> c, MetadataModelObject metadataModelObject) throws ClassNotFoundException {
         Reflections reflections = new Reflections("io.debezium");
         Object[] rawObjectArray = reflections.getSubTypesOf(c).toArray();
         List<Object> objectAttributeList = Arrays.asList(rawObjectArray);
@@ -33,9 +43,9 @@ public class MetadataGenerator {
 
         for (Object o : objectAttributeList) {
             MetadataModelObject mo = new MetadataModelObject();
-            Object[] implementationList = null;
-            if (((Class) o).isInterface()) {
-                implementationList = reflections.getSubTypesOf(((Class) o)).toArray();
+            Object[] implementationList;
+            if (((Class<?>) o).isInterface()) {
+                implementationList = reflections.getSubTypesOf(((Class<?>) o)).toArray();
                 for (Object implementation : implementationList) {
                     if (!objectAttributeList.contains(implementation)) {
                         objectAttributeList.add(implementation);
@@ -44,16 +54,16 @@ public class MetadataGenerator {
                 continue;
             }
 
-            if (((Class) o).getName().contains("Editable")) {
+            if (((Class<?>) o).getName().contains("Editable")) {
                 continue;
             }
-            if (((Class) o).getName().toString().contains("io.debezium")) {
+            if (((Class<?>) o).getName().contains("io.debezium")) {
                 mo.setType("class");
-                String name = ((Class) o).getName().toString();
+                String name = ((Class<?>) o).getName();
                 mo.setName(name.substring(name.lastIndexOf('.') + 1));
             }
 
-            printFields(((Class) o), mo, null);
+            printFields(((Class<?>) o), mo, null);
 
             arr.add(mo);
         }
@@ -61,17 +71,12 @@ public class MetadataGenerator {
         metadataModelObject.setOptions(arr);
     }
 
-
-    private void printList(Class c, MetadataModelObject metadataModelObject) {
-
-    }
-
-    private void printFields(Class c, MetadataModelObject metadataModelObject, String name) throws ClassNotFoundException {
+    private void printFields(Class<?> c, MetadataModelObject metadataModelObject, String name) throws ClassNotFoundException {
         if (!c.isInterface()) {
             metadataModelObject.setClazz(c.getTypeName());
             if (name == null) {
-                metadataModelObject.setName(c.getTypeName().substring(c.getTypeName().lastIndexOf('.') + 1));
-                metadataModelObject.setName(c.getTypeName().substring(c.getTypeName().lastIndexOf('.') + 1));
+                metadataModelObject.setName(c.getTypeName().substring(
+                        c.getTypeName().lastIndexOf('.') + 1));
             } else {
                 metadataModelObject.setName(name);
             }
@@ -80,7 +85,6 @@ public class MetadataGenerator {
                 metadataModelObject.setType("class");
             }
         }
-
 
         if (c.isInterface()) {
             metadataModelObject.setType("interface");
@@ -101,12 +105,11 @@ public class MetadataGenerator {
         List<MetadataModelObject> fields = new ArrayList<>();
 
         List<Field> currentFields = new ArrayList<>();
-        Class clazz = c;
+        Class<?> clazz = c;
         while (clazz != Object.class) {
             currentFields.addAll(Arrays.asList(clazz.getDeclaredFields()));
             clazz = clazz.getSuperclass();
         }
-
 
         for (Field f : currentFields) {
             if (Modifier.isFinal(f.getModifiers())) continue;
@@ -118,14 +121,13 @@ public class MetadataGenerator {
             String type = f.getAnnotatedType().toString();
             if (type.contains("io.debezium")) {
                 field.setType("class");
-                Class x = ClassLoader.getSystemClassLoader().loadClass(f.getType().getName());
             } else {
                 field.setType(f.getAnnotatedType().toString());
             }
 
 
             if (f.getAnnotatedType().toString().contains("io.debezium")) {
-                Class x = ClassLoader.getSystemClassLoader().loadClass(f.getType().getName());
+                Class<?> x = ClassLoader.getSystemClassLoader().loadClass(f.getType().getName());
                 if (x.isEnum()) {
                     field.setType("enum");
                     List<String> variants = new ArrayList<>();

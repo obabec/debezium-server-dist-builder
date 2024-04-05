@@ -1,5 +1,9 @@
 package io.debezium.server.dist.builder.modules.source.offset;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleNode;
 import io.debezium.server.dist.builder.modules.config.Config;
@@ -15,11 +19,6 @@ import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
-
-//TODO: problem melo by to vzdycky byt jdbc.offset.storage atp...
 @Getter
 @Setter
 @Buildable

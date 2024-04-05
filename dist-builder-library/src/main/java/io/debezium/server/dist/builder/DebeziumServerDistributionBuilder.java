@@ -1,9 +1,32 @@
 package io.debezium.server.dist.builder;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.debezium.server.dist.builder.modules.Dependency;
-import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.utils.ZipUtils;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
@@ -20,40 +43,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-
 import static java.util.Objects.nonNull;
 
 
 //TODO:
-// Figure problem with maven home automatic detection or maybe let this responsibility to CLI ?
+// Figure problem with maven home automatic detection?
 
 
 public class DebeziumServerDistributionBuilder {
     private static final String SERVER_FOLDER = "debezium-server-dist";
     private static final Logger LOGGER = LoggerFactory.getLogger(DebeziumServerDistributionBuilder.class);
     private static final String POM_TEMPLATE = "template.xslt";
-
+    private final String VERSION = "2.5.1.Final";
     private List<Dependency> dependencyList;
     private CustomDebeziumServer customDebeziumServer;
     private String git_repo = null;
@@ -62,7 +63,7 @@ public class DebeziumServerDistributionBuilder {
     private Git distRepo;
     private Document pom;
     private Node dependenciesNode;
-    private final String VERSION = "2.5.1.Final";
+
     public DebeziumServerDistributionBuilder() {
     }
 
@@ -88,7 +89,7 @@ public class DebeziumServerDistributionBuilder {
         this.pathToProject = path;
         return this;
     }
-// ((DeferredElementImpl) pom.getFirstChild().getFirstChild().getNextSibling().getChildNodes()).getElementsByTagName("version")
+
     private void preparePomDocument() {
         DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
         try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("base-pom.xml")) {
@@ -106,7 +107,7 @@ public class DebeziumServerDistributionBuilder {
             parent.appendChild(node);
 
             NodeList dependencyNodes = pom.getElementsByTagName("dependencies");
-            if (dependencyNodes.getLength() == 0) {
+            if (dependencyNodes.getLength() != 1) {
                 LOGGER.error("[ERROR] Base pom file from resources is corrupted!");
                 throw new RuntimeException("Base pom file from resources is corrupted!");
             }
@@ -128,27 +129,31 @@ public class DebeziumServerDistributionBuilder {
 
             transformer.transform(source, result);
 
-            copyDockerFile();
+            copyFile("Dockerfile", true);
+            copyFile("Dockerfile.insecure", true);
+            copyFile("Readme.md", false);
         } catch (IOException | TransformerException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void copyDockerFile() throws IOException {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("Dockerfile");
+    private void copyFile(String dockerfileName, boolean dockerfile) throws IOException {
+        InputStream is = getClass().getClassLoader().getResourceAsStream(dockerfileName);
         if (nonNull(is)) {
-            String dockerfile =  new String(is.readAllBytes(), StandardCharsets.UTF_8);
-            if (nonNull(customDebeziumServer.getVersion())) {
-                dockerfile = dockerfile.replace("$dbz_version", customDebeziumServer.getVersion());
-            } else {
-                dockerfile = dockerfile.replace("$dbz_version", VERSION);
+            String dockerfileString = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+            if (dockerfile) {
+                if (nonNull(customDebeziumServer.getVersion())) {
+                    dockerfileString = dockerfileString.replace("$dbz_version", customDebeziumServer.getVersion());
+                } else {
+                    dockerfileString = dockerfileString.replace("$dbz_version", VERSION);
+                }
             }
-            File f = new File(String.format("%s/Dockerfile", pathToProject));
+            File f = new File(String.format("%s/" + dockerfileName, pathToProject));
             if (!f.exists()) {
                 f.createNewFile();
             }
             try (FileOutputStream fs = new FileOutputStream(f)) {
-                fs.write(dockerfile.getBytes(StandardCharsets.UTF_8));
+                fs.write(dockerfileString.getBytes(StandardCharsets.UTF_8));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -242,7 +247,7 @@ public class DebeziumServerDistributionBuilder {
 
     public DebeziumServerDistributionBuilder generateOperatorCR() {
         this.customDebeziumServer.toYaml();
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
         try {
             byte[] cr = objectMapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsBytes(this.customDebeziumServer.getOperatorCR());

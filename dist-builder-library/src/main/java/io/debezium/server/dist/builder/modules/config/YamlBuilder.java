@@ -1,11 +1,10 @@
 package io.debezium.server.dist.builder.modules.config;
 
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
+
+import lombok.Getter;
 
 @Getter
 public class YamlBuilder implements ConfigBuilder<YamlConfig> {
@@ -22,7 +21,7 @@ public class YamlBuilder implements ConfigBuilder<YamlConfig> {
     @Override
     public void put(String key, Object value) {
         if (value != null) {
-         yaml.put(key, value);
+            yaml.put(key, value);
         }
     }
 
@@ -61,6 +60,12 @@ public class YamlBuilder implements ConfigBuilder<YamlConfig> {
         }
     }
 
+    public void putAllMap(HashMap<String, Object> p) {
+        if (p != null) {
+            yaml.putAll(p);
+        }
+    }
+
     @Override
     public void putAllWithPrefix(String prefix, YamlConfig p) {
         HashMap<String, Object> objectHashMap = p.toYaml();
@@ -72,7 +77,7 @@ public class YamlBuilder implements ConfigBuilder<YamlConfig> {
     }
 
     @Override
-    public void putAllWithPrefix(String prefix, HashMap<String, Object> map) {
+    public void putAllWithPrefix(String prefix, Map<String, Object> map) {
         if (map != null) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 yaml.put(prefix + entry.getKey(), entry.getValue());

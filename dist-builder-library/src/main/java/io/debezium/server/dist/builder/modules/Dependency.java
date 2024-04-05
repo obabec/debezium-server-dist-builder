@@ -1,13 +1,13 @@
 package io.debezium.server.dist.builder.modules;
 
+import java.util.List;
+import java.util.Objects;
+
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter

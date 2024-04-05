@@ -1,5 +1,9 @@
 package io.debezium.server.dist.builder.modules.sink;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
@@ -7,22 +11,17 @@ import io.debezium.server.dist.builder.modules.config.Config;
 import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.YamlBuilder;
-import io.debezium.server.dist.builder.modules.config.sinks.SinkConfig;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
-
 
 @Buildable
 @Getter
 @Setter
-public class Kinesis extends SinkConfig implements SinkNode {
+public class Kinesis implements SinkNode {
     private final String ARTIFACT_ID = DEBEZIUM_SERVER_PREFIX + "kinesis";
 
     private final String type = "kinesis";
@@ -68,6 +67,7 @@ public class Kinesis extends SinkConfig implements SinkNode {
         getCommonConfig(yamlBuilder);
         return yamlBuilder.getYaml();
     }
+
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();

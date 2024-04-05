@@ -1,12 +1,12 @@
 package io.debezium.server.dist.builder.deserialisers;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
-
-import java.io.IOException;
 
 public class CustomStringDeserializer extends StdDeserializer<String> {
     public CustomStringDeserializer() {
@@ -18,7 +18,7 @@ public class CustomStringDeserializer extends StdDeserializer<String> {
     }
 
     @Override
-    public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         String result = StringDeserializer.instance.deserialize(jsonParser, deserializationContext);
         if (result.isEmpty()) {
             return null;

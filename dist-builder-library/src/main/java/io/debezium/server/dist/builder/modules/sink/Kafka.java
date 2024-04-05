@@ -1,5 +1,9 @@
 package io.debezium.server.dist.builder.modules.sink;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SinkNode;
@@ -12,10 +16,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
 
 @Buildable
 @Getter

@@ -1,5 +1,7 @@
 package io.debezium.server.dist.builder.deserialisers;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -23,8 +25,6 @@ import io.debezium.server.dist.builder.modules.sink.Redis;
 import io.debezium.server.dist.builder.modules.sink.RocketMQ;
 import io.debezium.server.dist.builder.utils.DeserializationUtils;
 
-import java.io.IOException;
-
 public class SinkNodeDeserializer extends StdDeserializer<SinkNode> {
 
     public SinkNodeDeserializer() {
@@ -36,7 +36,7 @@ public class SinkNodeDeserializer extends StdDeserializer<SinkNode> {
     }
 
     @Override
-    public SinkNode deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public SinkNode deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.readValueAsTree();
         if (node.fields().hasNext()) {
             String key = node.fields().next().getKey();

@@ -1,5 +1,9 @@
 package io.debezium.server.dist.builder.modules.source;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+
 import io.debezium.server.dist.builder.modules.Dependency;
 import io.debezium.server.dist.builder.modules.ModuleDependencyBuilder;
 import io.debezium.server.dist.builder.modules.SourceNode;
@@ -19,10 +23,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
 
 
 @Buildable
@@ -122,11 +122,11 @@ public class Mysql extends SqlBasedConnectorConfig implements SourceNode {
     @Override
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
-        
+
         YamlBuilder config = new YamlBuilder(super.toYaml());
         getMysqlCommonConfig(config);
         config.putAll(schemaHistoryInternalConfig);
-        yamlBuilder.put("config", config.getYaml());
+        yamlBuilder.putAllMap(config.getYaml());
         return yamlBuilder.getYaml();
     }
 

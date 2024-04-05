@@ -1,7 +1,12 @@
 package io.debezium.server.dist.builder;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.debezium.operator.api.model.ConfigProperties;
+import io.debezium.operator.api.model.DebeziumServerBuilder;
 import io.debezium.operator.api.model.SinkBuilder;
 import io.debezium.operator.api.model.SourceBuilder;
 import io.debezium.server.dist.builder.modules.Dependency;
@@ -16,11 +21,8 @@ import io.debezium.server.dist.builder.modules.source.offset.InternalSchemaHisto
 import io.debezium.server.dist.builder.modules.source.offset.OffsetStorage;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
 
 
 @Getter
@@ -37,9 +39,17 @@ public class CustomDebeziumServer implements PropertiesConfig, YamlConfig {
     private List<Dependency> dependencyList;
 
     @JsonIgnore
+    @NonNull
     private io.debezium.operator.api.model.DebeziumServer operatorCR;
 
     public CustomDebeziumServer() {
+        operatorCR = new DebeziumServerBuilder()
+                .withNewMetadata()
+                .withName("custom-debezium-server")
+                .endMetadata()
+                .withNewSpec()
+                .withImage("IMAGE_PLACEHOLDER")
+                .endSpec().build();
     }
 
     @Override
@@ -75,8 +85,5 @@ public class CustomDebeziumServer implements PropertiesConfig, YamlConfig {
             return new HashMap<>(operatorCR.getSpec().asConfiguration().getAsMap());
         }
         return null;
-    }
-
-    public <C extends Config> void getCommonConfig(ConfigBuilder<C> builder) {
     }
 }

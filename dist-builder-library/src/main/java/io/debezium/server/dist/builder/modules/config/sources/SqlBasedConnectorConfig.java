@@ -1,5 +1,9 @@
 package io.debezium.server.dist.builder.modules.config.sources;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+
 import io.debezium.server.dist.builder.modules.config.Config;
 import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
@@ -10,10 +14,6 @@ import io.debezium.server.dist.builder.modules.config.sources.types.ProcessingFa
 import io.debezium.server.dist.builder.modules.config.sources.types.TimePrecisionMode;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
 
 
 @Getter

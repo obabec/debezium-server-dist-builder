@@ -1,5 +1,7 @@
 package io.debezium.server.dist.builder.deserialisers;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -15,8 +17,6 @@ import io.debezium.server.dist.builder.modules.source.storage.S3StorageConfig;
 import io.debezium.server.dist.builder.modules.source.storage.SchemaHistoryStorage;
 import io.debezium.server.dist.builder.utils.DeserializationUtils;
 
-import java.io.IOException;
-
 public class SchemaHistoryStorageDeserializer extends StdDeserializer<SchemaHistoryStorage> {
 
     public SchemaHistoryStorageDeserializer() {
@@ -28,7 +28,7 @@ public class SchemaHistoryStorageDeserializer extends StdDeserializer<SchemaHist
     }
 
     @Override
-    public SchemaHistoryStorage deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public SchemaHistoryStorage deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.readValueAsTree();
         if (node.fields().hasNext()) {
             String key = node.fields().next().getKey();

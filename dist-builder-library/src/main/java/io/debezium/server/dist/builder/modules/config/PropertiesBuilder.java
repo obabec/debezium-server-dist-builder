@@ -1,10 +1,11 @@
 package io.debezium.server.dist.builder.modules.config;
 
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+
+import lombok.Getter;
 
 @Getter
 public class PropertiesBuilder implements ConfigBuilder<PropertiesConfig> {
@@ -71,7 +72,7 @@ public class PropertiesBuilder implements ConfigBuilder<PropertiesConfig> {
     }
 
     @Override
-    public void putAllWithPrefix(String prefix, HashMap<String, Object> map) {
+    public void putAllWithPrefix(String prefix, Map<String, Object> map) {
         if (map != null) {
             for (String key : map.keySet()) {
                 properties.put(prefix + key, map.get(key));

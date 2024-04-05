@@ -1,5 +1,9 @@
 package io.debezium.server.dist.builder.modules.source;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.debezium.server.dist.builder.modules.Dependency;
@@ -20,10 +24,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
 
 @Buildable
 @Getter

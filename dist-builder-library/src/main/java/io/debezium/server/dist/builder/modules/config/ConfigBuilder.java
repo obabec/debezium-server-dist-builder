@@ -1,8 +1,7 @@
 package io.debezium.server.dist.builder.modules.config;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
+import java.util.Map;
 
 public interface ConfigBuilder<T extends Config> {
     void put(String key, Object value);
@@ -19,6 +18,6 @@ public interface ConfigBuilder<T extends Config> {
 
     void putAllWithPrefix(String prefix, T p);
 
-    void putAllWithPrefix(String prefix, HashMap<String, Object> map);
+    void putAllWithPrefix(String prefix, Map<String, Object> map);
 
 }

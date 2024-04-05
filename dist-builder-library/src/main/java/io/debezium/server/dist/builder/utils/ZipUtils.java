@@ -3,9 +3,6 @@
  */
 package io.debezium.server.dist.builder.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,15 +14,14 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ZipUtils {
     public static void zipFolder(Path source, OutputStream os) throws IOException {
         Logger LOGGER = LoggerFactory.getLogger(ZipUtils.class);
-        // get folder name as zip file name
-        String zipFileName = source.getFileName().toString() + ".zip";
-
         try (
-                ZipOutputStream zos = new ZipOutputStream(
-                        os)
+                ZipOutputStream zos = new ZipOutputStream(os);
         ) {
 
             Files.walkFileTree(source, new SimpleFileVisitor<>() {
@@ -41,18 +37,15 @@ public class ZipUtils {
                     try (FileInputStream fis = new FileInputStream(file.toFile())) {
 
                         Path targetFile = source.relativize(file);
-                        zos.putNextEntry(new ZipEntry(targetFile.toString()));
+                        ZipEntry entry = new ZipEntry(targetFile.toString());
+                        entry.setTime(0);
+                        zos.putNextEntry(entry);
 
                         byte[] buffer = new byte[1024];
                         int len;
                         while ((len = fis.read(buffer)) > 0) {
                             zos.write(buffer, 0, len);
                         }
-
-                        // if large file, throws out of memory
-                        //byte[] bytes = Files.readAllBytes(file);
-                        //zos.write(bytes, 0, bytes.length);
-
                         zos.closeEntry();
 
                         LOGGER.info("Zip file : %s" + file);
