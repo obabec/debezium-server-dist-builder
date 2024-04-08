@@ -57,7 +57,6 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
     private Boolean incrementalSnapshotOptionRecompile;
 
     //private HashMap<String, String> customMetricTags;
-    private SchemaHistoryInternalConfig schemaHistoryInternalConfig;
 
     public SqlServer() {
     }

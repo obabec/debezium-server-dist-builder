@@ -51,7 +51,6 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
     private LogMiningConfig logMiningConfig;
     private Boolean lobEnabled;
     private String unavailableValuePlaceholder;
-    private SchemaHistoryInternalConfig schemaHistoryInternalConfig;
 
     public Oracle() {
     }

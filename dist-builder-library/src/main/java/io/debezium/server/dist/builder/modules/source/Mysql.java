@@ -75,10 +75,6 @@ public class Mysql extends SqlBasedConnectorConfig implements SourceNode {
 
     //private HashMap<String, String> customMetricTags;
 
-    // Schema history topic configuration
-
-    private SchemaHistoryInternalConfig schemaHistoryInternalConfig;
-
     public Mysql() {
     }
 

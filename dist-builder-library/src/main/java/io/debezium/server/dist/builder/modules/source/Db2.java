@@ -33,8 +33,6 @@ public class Db2 extends SqlBasedConnectorConfig implements SourceNode {
 
     private Integer pollIntervalMs;
 
-    private SchemaHistoryInternalConfig schemaHistoryInternalConfig;
-
     public Db2() {
     }
 
