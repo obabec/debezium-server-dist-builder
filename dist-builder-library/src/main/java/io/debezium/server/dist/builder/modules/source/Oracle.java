@@ -94,7 +94,6 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
         getOracleCommonConfig(yamlBuilder);
-        yamlBuilder.putAll(schemaHistoryInternalConfig);
         yamlBuilder.putAll(logMiningConfig);
         return yamlBuilder.getYaml();
     }
@@ -105,7 +104,6 @@ public class Oracle extends SqlBasedConnectorConfig implements SourceNode {
         getOracleCommonConfig(propertiesBuilder);
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
         propertiesBuilder.putAll(logMiningConfig);
-        propertiesBuilder.putAll(schemaHistoryInternalConfig);
 
         return propertiesBuilder.getProperties();
     }

@@ -6,6 +6,9 @@ import java.util.Map;
 
 import lombok.Getter;
 
+/**
+ * YamlBuilder is used to handle all unexpected situations that can occur during yaml build.
+ */
 @Getter
 public class YamlBuilder implements ConfigBuilder<YamlConfig> {
     private final HashMap<String, Object> yaml;

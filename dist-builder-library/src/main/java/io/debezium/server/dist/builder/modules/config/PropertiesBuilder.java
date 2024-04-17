@@ -1,12 +1,14 @@
 package io.debezium.server.dist.builder.modules.config;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import lombok.Getter;
 
+/**
+ * PropertiesBuilder is used to handle all unexpected situations that can occur during properties build.
+ */
 @Getter
 public class PropertiesBuilder implements ConfigBuilder<PropertiesConfig> {
     private final Properties properties;

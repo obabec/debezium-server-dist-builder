@@ -93,7 +93,6 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
         getSqlServerCommonConfig(propertiesBuilder);
-        propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }
 
@@ -101,7 +100,6 @@ public class SqlServer extends SqlBasedConnectorConfig implements SourceNode {
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
         getSqlServerCommonConfig(yamlBuilder);
-        yamlBuilder.putAll(schemaHistoryInternalConfig);
         return yamlBuilder.getYaml();
     }
 }

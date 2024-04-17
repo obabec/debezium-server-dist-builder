@@ -42,6 +42,7 @@ spec:
       debezium.source.schema.history.internal.file.filename: "file-name"
       debezium.source.schema.history.internal.connector.id: "1"
       debezium.source.capture.mode: "change_streams"
+      debezium.source.offset.storage: "offset-storage"
     class: "io.debezium.connector.mongodb.MongoDbConnector"
   sink:
     type: "http"

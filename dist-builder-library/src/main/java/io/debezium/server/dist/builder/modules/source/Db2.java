@@ -56,7 +56,6 @@ public class Db2 extends SqlBasedConnectorConfig implements SourceNode {
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
         getDb2CommonConfig(yamlBuilder);
-        yamlBuilder.putAll(schemaHistoryInternalConfig);
         return yamlBuilder.getYaml();
     }
 
@@ -65,7 +64,6 @@ public class Db2 extends SqlBasedConnectorConfig implements SourceNode {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
         getDb2CommonConfig(propertiesBuilder);
-        propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }
 }

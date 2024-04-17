@@ -34,6 +34,7 @@ public class OffsetStorage implements PropertiesConfig, YamlConfig, ModuleNode {
     @Override
     public HashMap<String, Object> toYaml() {
         YamlBuilder yamlBuilder = new YamlBuilder();
+        getCommonConfig(yamlBuilder);
         yamlBuilder.putAllWithPrefix("debezium.source.offset.storage.", storageConfig);
         return yamlBuilder.getYaml();
     }
@@ -41,6 +42,7 @@ public class OffsetStorage implements PropertiesConfig, YamlConfig, ModuleNode {
     @Override
     public Properties toProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
+        getCommonConfig(propertiesBuilder);
         propertiesBuilder.putAllWithPrefix("debezium.source.offset.storage.", storageConfig);
         return propertiesBuilder.getProperties();
     }

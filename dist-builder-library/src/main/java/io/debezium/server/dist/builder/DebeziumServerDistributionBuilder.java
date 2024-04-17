@@ -45,11 +45,10 @@ import org.xml.sax.SAXException;
 
 import static java.util.Objects.nonNull;
 
-
-//TODO:
-// Figure problem with maven home automatic detection?
-
-
+/**
+ * DebeziumServerDistributionBuilder prepares full distribution folder. It modifies the pom, creates properties files
+ * copies Dockerfile, README, and other necessary files.
+ */
 public class DebeziumServerDistributionBuilder {
     private static final String SERVER_FOLDER = "debezium-server-dist";
     private static final Logger LOGGER = LoggerFactory.getLogger(DebeziumServerDistributionBuilder.class);
@@ -72,18 +71,33 @@ public class DebeziumServerDistributionBuilder {
         return this;
     }
 
+    /**
+     * The builder will use already cloned repository.
+     * @param path Path to cloned repository.
+     * @return current statue of the DebeziumServerDistributionBuilder object.
+     */
     public DebeziumServerDistributionBuilder withLocalProject(String path) {
         this.pathToProject = path;
         this.pathToTargetPom = String.format("%s/pom.xml", path);
         return this;
     }
 
+    /**
+     * Clones the debezium-server repository from specific target like fork.
+     * @param path Path where repository will be cloned.
+     * @return current statue of the DebeziumServerDistributionBuilder object.
+     */
     public DebeziumServerDistributionBuilder withRemoteRepository(String remoteRepository, String path) {
         this.pathToProject = path;
         this.git_repo = remoteRepository;
         return this;
     }
 
+    /**
+     * Clones the debezium-server repository from default target (github.com/debezium/debezium-server).
+     * @param path Path where repository will be cloned.
+     * @return current statue of the DebeziumServerDistributionBuilder object.
+     */
     public DebeziumServerDistributionBuilder withDefaultRepository(String path) {
         this.git_repo = "https://github.com/debezium/debezium-server.git";
         this.pathToProject = path;
@@ -177,6 +191,10 @@ public class DebeziumServerDistributionBuilder {
         currentPom.delete();
     }
 
+    /**
+     * Prepares whole DOM and rewrites the original POM in distro sub-folder.
+     * @return current statue of the DebeziumServerDistributionBuilder object.
+     */
     public DebeziumServerDistributionBuilder build() {
         this.dependencyList = new ArrayList<>();
         if (git_repo != null) {
@@ -207,6 +225,10 @@ public class DebeziumServerDistributionBuilder {
         }
     }
 
+    /**
+     * Only for experimental usage!
+     * @param mavenHome Maven home absolute path.
+     */
     public void mavenBuild(String mavenHome) {
         InvocationRequest request = new DefaultInvocationRequest();
         request.setPomFile(new File(pathToTargetPom));
@@ -225,6 +247,10 @@ public class DebeziumServerDistributionBuilder {
         }
     }
 
+    /**
+     * Generates configuration properties under src/main/resources/distro/conf/application.properties
+     * @return current statue of the DebeziumServerDistributionBuilder object.
+     */
     public DebeziumServerDistributionBuilder generateConfigurationProperties() {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
         propertiesBuilder.putAll(customDebeziumServer);
@@ -241,10 +267,20 @@ public class DebeziumServerDistributionBuilder {
         return this;
     }
 
+    /**
+     * Zips whole distribution
+     * @param pathToZip Path to folder to be zipped
+     * @param os Output stream where zip will take place
+     * @throws IOException
+     */
     public void zipDistribution(String pathToZip, OutputStream os) throws IOException {
         ZipUtils.zipFolder(Paths.get(pathToZip), os);
     }
 
+    /**
+     * Generates OperatorCR into 010_custom-debezium-server.yaml file.
+     * @return current statue of the DebeziumServerDistributionBuilder object.
+     */
     public DebeziumServerDistributionBuilder generateOperatorCR() {
         this.customDebeziumServer.toYaml();
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());

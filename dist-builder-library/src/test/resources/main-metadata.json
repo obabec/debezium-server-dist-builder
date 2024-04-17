@@ -347,38 +347,6 @@
         "name" : "incrementalSnapshotOptionRecompile",
         "type" : "java.lang.Boolean"
       }, {
-        "name" : "schemaHistoryInternalConfig",
-        "type" : "class",
-        "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig",
-        "fields" : [ {
-          "name" : "kafkaTopic",
-          "type" : "java.lang.String"
-        }, {
-          "name" : "kafkaBootstrapServers",
-          "type" : "java.util.List<java.lang.String>"
-        }, {
-          "name" : "kafkaRecoveryPollIntervalMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaQueryTimeoutMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaCreateTimeoutMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaRecoveryAttempts",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "skipUnparseableDdl",
-          "type" : "java.lang.Boolean"
-        }, {
-          "name" : "storeOnlyCapturedTablesDdl",
-          "type" : "java.lang.Boolean"
-        }, {
-          "name" : "storeOnlyCapturedDatabasesDdl",
-          "type" : "java.lang.Boolean"
-        } ]
-      }, {
         "name" : "databaseHostname",
         "type" : "java.lang.String"
       }, {
@@ -561,38 +529,6 @@
       }, {
         "name" : "pollIntervalMs",
         "type" : "java.lang.Integer"
-      }, {
-        "name" : "schemaHistoryInternalConfig",
-        "type" : "class",
-        "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig",
-        "fields" : [ {
-          "name" : "kafkaTopic",
-          "type" : "java.lang.String"
-        }, {
-          "name" : "kafkaBootstrapServers",
-          "type" : "java.util.List<java.lang.String>"
-        }, {
-          "name" : "kafkaRecoveryPollIntervalMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaQueryTimeoutMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaCreateTimeoutMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaRecoveryAttempts",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "skipUnparseableDdl",
-          "type" : "java.lang.Boolean"
-        }, {
-          "name" : "storeOnlyCapturedTablesDdl",
-          "type" : "java.lang.Boolean"
-        }, {
-          "name" : "storeOnlyCapturedDatabasesDdl",
-          "type" : "java.lang.Boolean"
-        } ]
       }, {
         "name" : "databaseHostname",
         "type" : "java.lang.String"
@@ -1037,38 +973,6 @@
         "name" : "snapshotTablesOrderByRowCount",
         "type" : "java.lang.Boolean"
       }, {
-        "name" : "schemaHistoryInternalConfig",
-        "type" : "class",
-        "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig",
-        "fields" : [ {
-          "name" : "kafkaTopic",
-          "type" : "java.lang.String"
-        }, {
-          "name" : "kafkaBootstrapServers",
-          "type" : "java.util.List<java.lang.String>"
-        }, {
-          "name" : "kafkaRecoveryPollIntervalMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaQueryTimeoutMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaCreateTimeoutMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaRecoveryAttempts",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "skipUnparseableDdl",
-          "type" : "java.lang.Boolean"
-        }, {
-          "name" : "storeOnlyCapturedTablesDdl",
-          "type" : "java.lang.Boolean"
-        }, {
-          "name" : "storeOnlyCapturedDatabasesDdl",
-          "type" : "java.lang.Boolean"
-        } ]
-      }, {
         "name" : "databaseHostname",
         "type" : "java.lang.String"
       }, {
@@ -1394,38 +1298,6 @@
       }, {
         "name" : "unavailableValuePlaceholder",
         "type" : "java.lang.String"
-      }, {
-        "name" : "schemaHistoryInternalConfig",
-        "type" : "class",
-        "clazz" : "io.debezium.server.dist.builder.modules.config.sources.types.SchemaHistoryInternalConfig",
-        "fields" : [ {
-          "name" : "kafkaTopic",
-          "type" : "java.lang.String"
-        }, {
-          "name" : "kafkaBootstrapServers",
-          "type" : "java.util.List<java.lang.String>"
-        }, {
-          "name" : "kafkaRecoveryPollIntervalMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaQueryTimeoutMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaCreateTimeoutMs",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "kafkaRecoveryAttempts",
-          "type" : "java.lang.Integer"
-        }, {
-          "name" : "skipUnparseableDdl",
-          "type" : "java.lang.Boolean"
-        }, {
-          "name" : "storeOnlyCapturedTablesDdl",
-          "type" : "java.lang.Boolean"
-        }, {
-          "name" : "storeOnlyCapturedDatabasesDdl",
-          "type" : "java.lang.Boolean"
-        } ]
       }, {
         "name" : "databaseHostname",
         "type" : "java.lang.String"

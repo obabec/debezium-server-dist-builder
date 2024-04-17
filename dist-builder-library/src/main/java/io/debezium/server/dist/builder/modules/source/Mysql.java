@@ -121,7 +121,6 @@ public class Mysql extends SqlBasedConnectorConfig implements SourceNode {
 
         YamlBuilder config = new YamlBuilder(super.toYaml());
         getMysqlCommonConfig(config);
-        config.putAll(schemaHistoryInternalConfig);
         yamlBuilder.putAllMap(config.getYaml());
         return yamlBuilder.getYaml();
     }
@@ -131,7 +130,6 @@ public class Mysql extends SqlBasedConnectorConfig implements SourceNode {
         PropertiesBuilder propertiesBuilder = new PropertiesBuilder(super.toProperties());
         propertiesBuilder.put(debeziumServerSourcePrefix + "connector.class", connectorClass);
         getMysqlCommonConfig(propertiesBuilder);
-        propertiesBuilder.putAll(schemaHistoryInternalConfig);
         return propertiesBuilder.getProperties();
     }
 }
