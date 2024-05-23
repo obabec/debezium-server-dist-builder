@@ -41,9 +41,15 @@ import io.debezium.server.dist.builder.modules.config.Config;
 import io.debezium.server.dist.builder.modules.config.ConfigBuilder;
 import io.debezium.server.dist.builder.modules.config.PropertiesBuilder;
 import io.debezium.server.dist.builder.modules.config.YamlBuilder;
+import io.sundr.builder.annotations.Buildable;
+import lombok.Getter;
+import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+@Buildable
+@Getter
+@Setter
 public class AzureBlobStorageConfig implements StorageConfig, SchemaHistoryStorage {
     private final String ARTIFACT_ID = "debezium-storage-azure-blob";
 
